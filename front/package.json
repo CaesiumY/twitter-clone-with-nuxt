@@ -1,0 +1,25 @@
+{
+  "name": "twitter-clone-with-nuxt",
+  "version": "1.0.0",
+  "description": "twitter-clone-with-nuxt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nuxt",
+    "start": "npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CaesiumY/twitter-clone-with-nuxt.git"
+  },
+  "author": "caesiumy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CaesiumY/twitter-clone-with-nuxt/issues"
+  },
+  "homepage": "https://github.com/CaesiumY/twitter-clone-with-nuxt",
+  "dependencies": {
+    "nuxt": "^2.14.7",
+    "vue": "^2.6.12"
+  }
+}
