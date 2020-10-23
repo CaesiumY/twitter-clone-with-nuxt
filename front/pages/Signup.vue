@@ -5,7 +5,11 @@
 </template>
 
 <script>
-export default {};
+export default {
+  head: {
+    title: "SignUp",
+  },
+};
 </script>
 
 <style scoped></style>

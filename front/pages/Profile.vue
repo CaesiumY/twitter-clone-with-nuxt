@@ -5,7 +5,11 @@
 </template>
 
 <script>
-export default {};
+export default {
+  head: {
+    title: "Profile",
+  },
+};
 </script>
 
 <style scoped></style>
