@@ -31,9 +31,9 @@
       </v-toolbar>
     </nav>
 
-    <v-row>
+    <v-row no-gutters class="mt-3">
       <v-col cols="12" md="4">
-        로그인
+        <login-form></login-form>
       </v-col>
       <v-col cols="12" md="8">
         <Nuxt />
@@ -43,7 +43,13 @@
 </template>
 
 <script>
-export default {};
+import LoginForm from "../components/LoginForm";
+
+export default {
+  components: {
+    LoginForm,
+  },
+};
 </script>
 
 <style scoped>
