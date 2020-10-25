@@ -2,6 +2,7 @@
   <v-container>
     <v-card>
       <v-form>
+        <v-subheader>로그인</v-subheader>
         <v-container>
           <v-text-field type="email" label="이메일" required />
           <v-text-field type="password" label="비밀번호" required />
