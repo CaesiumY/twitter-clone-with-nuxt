@@ -1,11 +1,18 @@
 <template>
   <div>
-    index
+    <post-card />
+    <post-card />
+    <post-card />
   </div>
 </template>
 
 <script>
-export default {};
+import PostCard from "../components/PostCard";
+export default {
+  components: {
+    PostCard,
+  },
+};
 </script>
 
 <style scoped></style>
