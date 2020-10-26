@@ -11,7 +11,7 @@
           </nuxt-link>
         </v-toolbar-title>
 
-        <v-spacer></v-spacer>
+        <v-spacer />
 
         <v-toolbar-items>
           <v-text-field
@@ -33,7 +33,7 @@
 
     <v-row no-gutters class="mt-3">
       <v-col cols="12" md="4">
-        <login-form></login-form>
+        <login-form />
       </v-col>
       <v-col cols="12" md="8">
         <Nuxt />

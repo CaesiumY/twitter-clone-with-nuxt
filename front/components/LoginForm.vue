@@ -9,18 +9,18 @@
         <v-subheader>로그인</v-subheader>
         <v-container>
           <v-text-field
+            v-model="email"
+            :rules="emailRules"
             type="email"
             label="이메일"
             required
-            v-model="email"
-            :rules="emailRules"
           />
           <v-text-field
+            v-model="password"
+            :rules="passwordRules"
             type="password"
             label="비밀번호"
             required
-            v-model="password"
-            :rules="passwordRules"
           />
           <div class="mt-2">
             <v-btn type="submit" color="success" :disabled="!isValid">

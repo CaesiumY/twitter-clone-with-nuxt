@@ -2,49 +2,54 @@
   <v-container>
     <v-card>
       <v-form
-        v-model="isValid"
         ref="signupForm"
+        v-model="isValid"
         @submit.prevent="onSubmitSignup"
       >
         <v-subheader>회원가입</v-subheader>
         <v-container>
           <v-text-field
+            v-model="email"
+            :rules="emailRules"
             type="email"
             label="이메일"
             required
-            v-model="email"
-            :rules="emailRules"
           />
           <v-text-field
+            v-model="password"
+            :rules="passwordRules"
             type="password"
             label="비밀번호"
             required
-            v-model="password"
-            :rules="passwordRules"
           />
           <v-text-field
+            v-model="passwordCheck"
+            :rules="passwordCheckRules"
             type="password"
             label="비밀번호 확인"
             required
-            v-model="passwordCheck"
-            :rules="passwordCheckRules"
           />
           <v-text-field
+            v-model="nickname"
+            :rules="nicknameRules"
             type="nickname"
             label="닉네임"
             required
-            v-model="nickname"
-            :rules="nicknameRules"
           />
           <v-checkbox
-            label="동의합니다"
-            required
             v-model="isAgreed"
             :rules="isAgreedRules"
+            label="동의합니다"
+            required
           />
-          <v-btn class="mt-2" type="submit" color="success" :disabled="!isValid"
-            >회원가입</v-btn
+          <v-btn
+            class="mt-2"
+            color="success"
+            :disabled="!isValid"
+            type="submit"
           >
+            회원가입
+          </v-btn>
         </v-container>
       </v-form>
     </v-card>
@@ -53,9 +58,6 @@
 
 <script>
 export default {
-  head: {
-    title: "SignUp",
-  },
   data() {
     return {
       isValid: false,
@@ -80,6 +82,9 @@ export default {
       nicknameRules: [(v) => !!v || "닉네임은 필수입니다."],
       isAgreedRules: [(v) => !!v || "동의는 필수입니다."],
     };
+  },
+  head: {
+    title: "SignUp",
   },
   methods: {
     onSubmitSignup() {

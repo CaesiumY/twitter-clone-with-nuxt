@@ -19,7 +19,7 @@
         <v-subheader>
           Follows
         </v-subheader>
-        <follow-list></follow-list>
+        <follow-list />
       </v-container>
     </v-card>
     <v-card class="mt-3">
@@ -27,7 +27,7 @@
         <v-subheader>
           Followers
         </v-subheader>
-        <follow-list></follow-list>
+        <follow-list />
       </v-container>
     </v-card>
   </v-container>
@@ -37,11 +37,11 @@
 import FollowList from "../components/FollowList";
 
 export default {
-  head: {
-    title: "Profile",
-  },
   components: {
     FollowList,
+  },
+  head: {
+    title: "Profile",
   },
 };
 </script>
