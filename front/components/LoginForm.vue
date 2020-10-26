@@ -1,13 +1,33 @@
 <template>
   <v-container>
     <v-card>
-      <v-form>
+      <v-form
+        ref="loginForm"
+        v-model="isValid"
+        @submit.prevent="onSubmitLoginForm"
+      >
         <v-subheader>로그인</v-subheader>
         <v-container>
-          <v-text-field type="email" label="이메일" required />
-          <v-text-field type="password" label="비밀번호" required />
-          <v-btn dark type="submit" color="green">로그인</v-btn>
-          <v-btn>회원가입</v-btn>
+          <v-text-field
+            type="email"
+            label="이메일"
+            required
+            v-model="email"
+            :rules="emailRules"
+          />
+          <v-text-field
+            type="password"
+            label="비밀번호"
+            required
+            v-model="password"
+            :rules="passwordRules"
+          />
+          <div class="mt-2">
+            <v-btn type="submit" color="success" :disabled="!isValid">
+              로그인
+            </v-btn>
+            <v-btn>회원가입</v-btn>
+          </div>
         </v-container>
       </v-form>
     </v-card>
@@ -15,7 +35,26 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      isValid: false,
+      email: "",
+      password: "",
+      emailRules: [
+        (v) => !!v || "이메일은 필수입니다.",
+        (v) => /.+@.+/.test(v) || "이메일 형식이 올바르지 않습니다.",
+      ],
+      passwordRules: [(v) => !!v || "비밀번호는 필수입니다."],
+    };
+  },
+  methods: {
+    onSubmitLoginForm() {
+      console.log(this.$refs.loginForm.validate());
+      console.log(this.isValid);
+    },
+  },
+};
 </script>
 
 <style scoped></style>
