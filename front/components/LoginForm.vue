@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card>
+    <v-card v-if="!user">
       <v-form
         ref="loginForm"
         v-model="isValid"
@@ -31,6 +31,16 @@
         </v-container>
       </v-form>
     </v-card>
+    <v-card v-else>
+      <v-container>
+        <p>{{ user.nickname }}님 안녕하세요.</p>
+        <div>
+          <v-btn @click="onLogout">
+            Logout
+          </v-btn>
+        </div>
+      </v-container>
+    </v-card>
   </v-container>
 </template>
 
@@ -48,10 +58,22 @@ export default {
       passwordRules: [(v) => !!v || "비밀번호는 필수입니다."],
     };
   },
+  computed: {
+    user() {
+      return this.$store.state.users.user;
+    },
+  },
   methods: {
     onSubmitLoginForm() {
-      console.log(this.$refs.loginForm.validate());
-      console.log(this.isValid);
+      if (this.$refs.loginForm.validate()) {
+        this.$store.dispatch("users/LOGIN", {
+          email: this.email,
+          nickname: this.email.split("@")[0],
+        });
+      }
+    },
+    onLogout() {
+      this.$store.dispatch("users/LOGOUT");
     },
   },
 };

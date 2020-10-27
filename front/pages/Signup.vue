@@ -88,8 +88,16 @@ export default {
   },
   methods: {
     onSubmitSignup() {
-      console.log(this.$refs.signupForm.validate());
-      console.log(this.isValid);
+      if (this.$refs.signupForm.validate()) {
+        this.$store
+          .dispatch("users/LOGIN", {
+            email: this.email,
+            nickname: this.nickname,
+          })
+          .then(() => {
+            this.$router.push("/");
+          });
+      }
     },
   },
 };
