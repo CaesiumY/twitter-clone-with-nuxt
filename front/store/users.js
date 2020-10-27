@@ -1,4 +1,4 @@
-export const store = () => ({
+export const state = () => ({
   countUsers: 0,
 });
 
