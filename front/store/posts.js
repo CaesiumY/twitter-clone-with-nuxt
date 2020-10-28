@@ -1,9 +1,15 @@
 export const state = () => ({
-  countPosts: 0,
+  posts: [],
 });
 
 export const mutations = {
-  INCREMENT(state) {
-    state.countPosts++;
+  ADD_POST(state, payload) {
+    state.posts.unshift(payload);
+  },
+};
+
+export const actions = {
+  ADD({ commit }, payload) {
+    commit("ADD_POST", payload);
   },
 };
