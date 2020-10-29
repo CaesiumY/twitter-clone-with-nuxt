@@ -3,9 +3,7 @@
     <post-form v-if="user" />
 
     <div>
-      <post-card />
-      <post-card />
-      <post-card />
+      <post-card v-for="post in posts" :key="post.id" :post="post" />
     </div>
   </div>
 </template>
@@ -22,6 +20,7 @@ export default {
   },
   computed: {
     ...mapState("users", ["user"]),
+    ...mapState("posts", ["posts"]),
   },
   methods: {
     onClick() {

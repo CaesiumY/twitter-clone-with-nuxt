@@ -13,7 +13,7 @@
             :hide-details="hideDetails"
             :success="success"
             :success-messages="successMessages"
-            :rules="[(v) => !!v || '내용을 입력하세요.']"
+            :rules="[(v) => !!(v || '').trim() || '내용을 입력하세요.']"
             @input="onChangeTextarea"
           />
 
@@ -57,12 +57,15 @@ export default {
           user: {
             nickname: this.user.nickname,
           },
+          id: Date.now().toString() + Math.floor(Math.random() * 300),
+          createdAt: Date.now(),
         })
         .then(() => {
-          this.contents = "";
+          console.log("success");
           this.success = true;
           this.hideDetails = false;
           this.successMessages = "등록 성공!";
+          this.contents = " ";
         });
     },
   },

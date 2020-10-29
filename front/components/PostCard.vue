@@ -4,8 +4,10 @@
       <v-img />
       <v-card-text>
         <div>
-          <h3>포스트 카드</h3>
-          <p>포스트 카드 내용</p>
+          <h3>{{ post.user.nickname }}</h3>
+          <p class="body-1">
+            {{ post.contents }}
+          </p>
         </div>
       </v-card-text>
       <v-card-actions>
@@ -27,7 +29,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    post: {
+      type: Object,
+      required: true,
+    },
+  },
+};
 </script>
 
 <style scoped></style>
