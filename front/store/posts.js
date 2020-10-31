@@ -11,6 +11,11 @@ export const mutations = {
 
     state.posts.splice(i, 1);
   },
+  ADD_COMMENT(state, payload) {
+    const i = state.posts.findIndex((v) => v.id === payload.postId);
+
+    state.posts[i].comments.push(payload);
+  },
 };
 
 export const actions = {
@@ -19,5 +24,8 @@ export const actions = {
   },
   REMOVE({ commit }, payload) {
     commit("REMOVE_POST", payload);
+  },
+  ADD_COMMENT({ commit }, payload) {
+    commit("ADD_COMMENT", payload);
   },
 };

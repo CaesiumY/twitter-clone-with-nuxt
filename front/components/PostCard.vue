@@ -17,7 +17,7 @@
         <v-btn text color="#f39c12">
           <v-icon>mdi-heart-outline</v-icon>
         </v-btn>
-        <v-btn text color="#f39c12">
+        <v-btn text color="#f39c12" @click="onToggleComments">
           <v-icon>mdi-comment-outline</v-icon>
         </v-btn>
 
@@ -47,16 +47,46 @@
         </v-menu>
       </v-card-actions>
     </v-card>
+
+    <template v-if="isShowComments">
+      <comment-form :post-id="post.id" />
+      <v-list>
+        <v-list-item v-for="comment in post.comments" :key="comment.id">
+          <v-list-item-avatar color="teal">
+            <span>{{ comment.user.nickname[0] }}</span>
+          </v-list-item-avatar>
+
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ comment.user.nickname }}
+            </v-list-item-title>
+            <v-list-item-subtitle>
+              {{ comment.contents }}
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </template>
   </v-container>
 </template>
 
 <script>
+import CommentForm from "../components/CommentForm";
+
 export default {
+  components: {
+    CommentForm,
+  },
   props: {
     post: {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      isShowComments: false,
+    };
   },
   methods: {
     onDeletePost() {
@@ -64,6 +94,9 @@ export default {
     },
     onEditPost() {
       console.log("id", this.post.id);
+    },
+    onToggleComments() {
+      this.isShowComments = !this.isShowComments;
     },
   },
 };

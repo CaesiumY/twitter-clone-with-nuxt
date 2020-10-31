@@ -44,10 +44,12 @@ export default {
     ...mapState("users", ["user"]),
   },
   methods: {
-    onChangeTextarea() {
-      this.hideDetails = true;
-      this.success = false;
-      this.successMessages = "";
+    onChangeTextarea(value) {
+      if (value.length) {
+        this.hideDetails = true;
+        this.success = false;
+        this.successMessages = "";
+      }
     },
     onSubmitForm() {
       if (!this.$refs.form.validate()) return;
@@ -59,9 +61,9 @@ export default {
           },
           id: Date.now().toString() + Math.floor(Math.random() * 300),
           createdAt: Date.now(),
+          comments: [],
         })
         .then(() => {
-          console.log("success");
           this.success = true;
           this.hideDetails = false;
           this.successMessages = "등록 성공!";
