@@ -16,7 +16,6 @@
         :success="success"
         :success-messages="successMessages"
         :hide-details="hideDetails"
-        :rules="[(v) => !!(v || '').trim() || '내용을 입력하세요.']"
         @input="onChangeTextarea"
       />
       <v-btn type="submit" color="success" absolute right top>
@@ -49,15 +48,15 @@ export default {
     ...mapState("users", ["user"]),
   },
   methods: {
-    onChangeTextarea(value) {
-      if (value.length) {
+    onChangeTextarea() {
+      if (this.contents) {
         this.hideDetails = true;
         this.success = false;
         this.successMessages = "";
       }
     },
-    onSubmitForm() {
-      if (this.$refs.form.validate()) {
+    onSubmitForm(value) {
+      if (this.$refs.form.validate() && this.contents) {
         this.$store
           .dispatch("posts/ADD_COMMENT", {
             contents: this.contents,

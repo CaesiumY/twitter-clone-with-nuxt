@@ -44,8 +44,8 @@ export default {
     ...mapState("users", ["user"]),
   },
   methods: {
-    onChangeTextarea(value) {
-      if (value.length) {
+    onChangeTextarea() {
+      if (this.contents) {
         this.hideDetails = true;
         this.success = false;
         this.successMessages = "";
