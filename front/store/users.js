@@ -6,6 +6,11 @@ export const mutations = {
   SET_USER(state, payload) {
     state.user = payload;
   },
+  SET_USER_DETAILS(state, payload) {
+    const userProfile = { ...state.user, ...payload };
+
+    state.user = userProfile;
+  },
 };
 
 export const actions = {
@@ -17,5 +22,8 @@ export const actions = {
   },
   LOGOUT({ commit }) {
     commit("SET_USER", null);
+  },
+  SET_NICKNAME({ commit }, payload) {
+    commit("SET_USER_DETAILS", payload);
   },
 };

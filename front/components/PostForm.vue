@@ -62,6 +62,8 @@ export default {
           id: Date.now().toString() + Math.floor(Math.random() * 300),
           createdAt: Date.now(),
           comments: [],
+          followers: ["오렌지", "포도", "자몽"],
+          followings: ["오렌지", "포도", "자몽"],
         })
         .then(() => {
           this.success = true;

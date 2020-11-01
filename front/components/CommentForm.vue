@@ -55,7 +55,7 @@ export default {
         this.successMessages = "";
       }
     },
-    onSubmitForm(value) {
+    onSubmitForm() {
       if (this.$refs.form.validate() && this.contents) {
         this.$store
           .dispatch("posts/ADD_COMMENT", {
