@@ -93,6 +93,8 @@ export default {
           .dispatch("users/LOGIN", {
             email: this.email,
             nickname: this.nickname,
+            followers: ["오렌지", "포도", "자몽"],
+            followings: ["오렌지", "포도", "자몽"],
           })
           .then(() => {
             this.$router.push("/");

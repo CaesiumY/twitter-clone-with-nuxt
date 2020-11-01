@@ -11,6 +11,12 @@ export const mutations = {
 
     state.user = userProfile;
   },
+  DELETE_FOLLOWER(state, payload) {
+    state.user.followers.splice(payload.id, 1);
+  },
+  DELETE_FOLLOWING(state, payload) {
+    state.user.followings.splice(payload.id, 1);
+  },
 };
 
 export const actions = {
@@ -25,5 +31,10 @@ export const actions = {
   },
   SET_NICKNAME({ commit }, payload) {
     commit("SET_USER_DETAILS", payload);
+  },
+  DELETE_FOLLOW({ commit }, payload) {
+    payload.type === "following"
+      ? commit("DELETE_FOLLOWING", payload)
+      : commit("DELETE_FOLLOWER", payload);
   },
 };

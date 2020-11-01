@@ -19,7 +19,10 @@
         <v-subheader>
           Follows
         </v-subheader>
-        <follow-list />
+        <follow-list
+          :follows="user ? user.followings : []"
+          follow-type="following"
+        />
       </v-container>
     </v-card>
     <v-card class="mt-3">
@@ -27,7 +30,10 @@
         <v-subheader>
           Followers
         </v-subheader>
-        <follow-list />
+        <follow-list
+          :follows="user ? user.followers : []"
+          follow-type="follower"
+        />
       </v-container>
     </v-card>
   </v-container>
