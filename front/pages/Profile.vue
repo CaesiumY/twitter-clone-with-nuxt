@@ -47,6 +47,7 @@ export default {
   components: {
     FollowList,
   },
+  middleware: "authenticated",
   data() {
     return {
       isValid: false,

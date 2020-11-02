@@ -58,6 +58,7 @@
 
 <script>
 export default {
+  middleware: "anonymous",
   data() {
     return {
       isValid: false,
@@ -85,6 +86,18 @@ export default {
   },
   head: {
     title: "SignUp",
+  },
+  computed: {
+    user() {
+      return this.$store.state.users.user;
+    },
+  },
+  watch: {
+    user(current) {
+      if (current) {
+        this.$router.push("/");
+      }
+    },
   },
   methods: {
     onSubmitSignup() {
