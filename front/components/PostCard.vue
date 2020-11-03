@@ -3,12 +3,12 @@
     <v-card>
       <v-img />
       <v-card-text>
-        <div>
+        <nuxt-link class="content-link" :to="`/post/${post.id}`">
           <h3>{{ post.user.nickname }}</h3>
           <p class="body-1">
             {{ post.contents }}
           </p>
-        </div>
+        </nuxt-link>
       </v-card-text>
       <v-card-actions>
         <v-btn text color="#f39c12">
@@ -102,4 +102,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.content-link {
+  text-decoration: none;
+  color: inherit;
+}
+</style>
