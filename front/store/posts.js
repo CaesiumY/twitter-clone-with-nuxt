@@ -1,6 +1,9 @@
 export const state = () => ({
   posts: [],
+  hasMorePosts: true,
 });
+
+const LIMIT = 10;
 
 export const mutations = {
   ADD_POST(state, payload) {
@@ -16,6 +19,26 @@ export const mutations = {
 
     state.posts[i].comments.push(payload);
   },
+  LOAD_POSTS(state) {
+    const dummy = Array(10)
+      .fill()
+      .map((i) => {
+        const id = Date.now().toString() + Math.floor(Math.random() * 300);
+
+        return {
+          id,
+          contents: `id = ${id}`,
+          user: {
+            nickname: "dummy user",
+          },
+          createdAt: Date.now(),
+          comments: [],
+        };
+      });
+
+    state.posts = [...state.posts, ...dummy];
+    state.hasMorePosts = dummy.length === LIMIT;
+  },
 };
 
 export const actions = {
@@ -27,5 +50,10 @@ export const actions = {
   },
   ADD_COMMENT({ commit }, payload) {
     commit("ADD_COMMENT", payload);
+  },
+  LOAD_POSTS({ commit, state }) {
+    if (state.hasMorePosts) {
+      commit("LOAD_POSTS");
+    }
   },
 };
