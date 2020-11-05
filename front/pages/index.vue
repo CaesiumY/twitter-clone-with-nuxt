@@ -18,13 +18,14 @@ export default {
     PostCard,
     PostForm,
   },
+  fetch({ store }) {
+    store.dispatch("posts/LOAD_POSTS");
+  },
   computed: {
     ...mapState("users", ["user"]),
     ...mapState("posts", ["posts"]),
   },
-  mounted() {
-    this.$store.dispatch("posts/LOAD_POSTS");
-  },
+
   methods: {
     onClick() {
       this.$store.commit("INCREMENT");
