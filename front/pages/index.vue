@@ -23,9 +23,18 @@ export default {
   },
   computed: {
     ...mapState("users", ["user"]),
-    ...mapState("posts", ["posts"]),
+    ...mapState("posts", ["posts", "hasMorePosts"]),
   },
-
+  mounted() {
+    window.addEventListener("scroll", () => {
+      if (
+        window.scrollY + document.documentElement.clientHeight >
+        document.documentElement.scrollHeight - 300
+      ) {
+        this.$store.dispatch("posts/LOAD_POSTS");
+      }
+    });
+  },
   methods: {
     onClick() {
       this.$store.commit("INCREMENT");

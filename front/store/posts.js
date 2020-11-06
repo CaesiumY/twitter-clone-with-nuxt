@@ -4,6 +4,7 @@ export const state = () => ({
 });
 
 const LIMIT = 10;
+const TOTAL = 51;
 
 export const mutations = {
   ADD_POST(state, payload) {
@@ -20,14 +21,16 @@ export const mutations = {
     state.posts[i].comments.push(payload);
   },
   LOAD_POSTS(state) {
-    const dummy = Array(10)
+    const diff = TOTAL - state.posts.length;
+
+    const dummy = Array(diff < LIMIT ? diff : LIMIT)
       .fill()
-      .map((i) => {
-        const id = Date.now().toString() + Math.floor(Math.random() * 300);
+      .map((v, i) => {
+        const id = Date.now().toString() + Math.floor(Math.random() * 3000);
 
         return {
           id,
-          contents: `id = ${id}`,
+          contents: `${i + 1}번째 id = ${id}`,
           user: {
             nickname: "dummy user",
           },
