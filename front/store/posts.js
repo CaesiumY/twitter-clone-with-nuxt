@@ -30,7 +30,7 @@ export const mutations = {
 
         return {
           id,
-          contents: `${i + 1}번째 id = ${id}`,
+          contents: `${i + state.posts.length + 1}번째 id = ${id}`,
           user: {
             nickname: "dummy user",
           },
