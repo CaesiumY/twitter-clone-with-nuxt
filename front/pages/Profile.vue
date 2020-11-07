@@ -23,6 +23,14 @@
           :follows="user ? user.followings : []"
           follow-type="following"
         />
+        <v-btn
+          v-if="hasMoreFollowings"
+          block
+          color="primary"
+          @click="onClickMore({ type: 'following' })"
+        >
+          더보기
+        </v-btn>
       </v-container>
     </v-card>
     <v-card class="mt-3">
@@ -34,6 +42,14 @@
           :follows="user ? user.followers : []"
           follow-type="follower"
         />
+        <v-btn
+          v-if="hasMoreFollowers"
+          block
+          color="primary"
+          @click="onClickMore({ type: 'follower' })"
+        >
+          더보기
+        </v-btn>
       </v-container>
     </v-card>
   </v-container>
@@ -54,11 +70,15 @@ export default {
       nickname: "",
     };
   },
+  fetch({ store }) {
+    store.dispatch("users/LOAD_FOLLOWERS");
+    store.dispatch("users/LOAD_FOLLOWINGS");
+  },
   head: {
     title: "Profile",
   },
   computed: {
-    ...mapState("users", ["user"]),
+    ...mapState("users", ["user", "hasMoreFollowers", "hasMoreFollowings"]),
   },
   watch: {
     user() {
@@ -78,6 +98,13 @@ export default {
     },
     setNickname() {
       this.nickname = this.user ? this.user.nickname : "";
+    },
+    onClickMore(payload) {
+      const { type } = payload;
+
+      type === "following"
+        ? this.$store.dispatch("users/LOAD_FOLLOWINGS")
+        : this.$store.dispatch("users/LOAD_FOLLOWERS");
     },
   },
 };

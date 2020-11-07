@@ -1,6 +1,11 @@
 export const state = () => ({
   user: null,
+  hasMoreFollowers: true,
+  hasMoreFollowings: true,
 });
+
+const TOTAL = 16;
+const LIMIT = 3;
 
 export const mutations = {
   SET_USER(state, payload) {
@@ -16,6 +21,30 @@ export const mutations = {
   },
   DELETE_FOLLOWING(state, payload) {
     state.user.followings.splice(payload.id, 1);
+  },
+  LOAD_FOLLOWERS(state) {
+    const diff = TOTAL - state.user.followers.length;
+
+    const dummy = Array(diff < LIMIT ? diff : LIMIT)
+      .fill()
+      .map((v, i) => {
+        return Math.floor(Math.random() * 3000) + Date.now().toString();
+      });
+
+    state.user.followers = [...state.user.followers, ...dummy];
+    state.hasMoreFollowers = dummy.length === LIMIT;
+  },
+  LOAD_FOLLOWINGS(state) {
+    const diff = TOTAL - state.user.followings.length;
+
+    const dummy = Array(diff < LIMIT ? diff : LIMIT)
+      .fill()
+      .map((v, i) => {
+        return Math.floor(Math.random() * 3000) + Date.now().toString();
+      });
+
+    state.user.followings = [...state.user.followings, ...dummy];
+    state.hasMoreFollowings = dummy.length === LIMIT;
   },
 };
 
@@ -36,5 +65,15 @@ export const actions = {
     payload.type === "following"
       ? commit("DELETE_FOLLOWING", payload)
       : commit("DELETE_FOLLOWER", payload);
+  },
+  LOAD_FOLLOWERS({ commit, state }) {
+    if (state.hasMoreFollowers) {
+      commit("LOAD_FOLLOWERS");
+    }
+  },
+  LOAD_FOLLOWINGS({ commit, state }) {
+    if (state.hasMoreFollowings) {
+      commit("LOAD_FOLLOWINGS");
+    }
   },
 };
