@@ -14,12 +14,16 @@
         <v-spacer />
 
         <v-toolbar-items>
-          <v-text-field
-            label="검색"
-            hide-details
-            prepend-icon="mdi-magnify"
-            class="d-flex align-center"
-          />
+          <v-form @submit.prevent="onSubmitSearch">
+            <div class="d-flex align-center" style="height: 100%">
+              <v-text-field
+                v-model="search"
+                label="검색"
+                hide-details
+                prepend-icon="mdi-magnify"
+              />
+            </div>
+          </v-form>
 
           <v-btn class="d-flex align-center" text nuxt to="/profile">
             <div>프로필</div>
@@ -48,6 +52,20 @@ import LoginForm from "../components/LoginForm";
 export default {
   components: {
     LoginForm,
+  },
+  data() {
+    return {
+      search: "",
+    };
+  },
+  methods: {
+    onSubmitSearch() {
+      this.$router.push({
+        path: `search/${this.search}`,
+      });
+
+      this.search = "";
+    },
   },
 };
 </script>

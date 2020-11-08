@@ -3,7 +3,7 @@
     <v-card>
       <v-img />
       <v-card-text>
-        <nuxt-link class="content-link" :to="`/post/${post.id}`">
+        <nuxt-link class="content-link" :to="`/user/${post.id}`">
           <h3>{{ post.user.nickname }}</h3>
           <p class="body-1">
             {{ post.contents }}
