@@ -1,0 +1,27 @@
+{
+  "name": "twitter-clone-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node index.js",
+    "start": "npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CaesiumY/twitter-clone-with-nuxt.git"
+  },
+  "keywords": [
+    "node"
+  ],
+  "author": "caesiumy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CaesiumY/twitter-clone-with-nuxt/issues"
+  },
+  "homepage": "https://github.com/CaesiumY/twitter-clone-with-nuxt#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
