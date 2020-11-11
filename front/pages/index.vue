@@ -35,11 +35,7 @@ export default {
       }
     });
   },
-  methods: {
-    onClick() {
-      this.$store.commit("INCREMENT");
-    },
-  },
+  methods: {},
 };
 </script>
 
