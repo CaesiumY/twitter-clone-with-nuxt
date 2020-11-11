@@ -9,6 +9,7 @@ const LIMIT = 3;
 
 export const mutations = {
   SET_USER(state, payload) {
+    this.$axios.post("/user", { ...payload });
     state.user = payload;
   },
   SET_USER_DETAILS(state, payload) {
