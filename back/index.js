@@ -1,9 +1,13 @@
 const express = require("express");
+const cors = require("cors");
+const bcrypt = require("bcrypt");
+
 const db = require("./models");
 const app = express();
 
 db.sequelize.sync();
 
+app.use(cors("http://localhost:3000"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -17,13 +21,13 @@ app.post("/user", async (req, res, next) => {
   console.log(req.body);
   const { email, nickname, password } = req.body;
 
+  const hashedPassword = await bcrypt.hash(password, 8);
+
   try {
     const newUser = await db.User.create({
-      where: {
-        email,
-        nickname,
-        password,
-      },
+      email,
+      nickname,
+      password: hashedPassword,
     });
 
     res.status(201).json(newUser);
