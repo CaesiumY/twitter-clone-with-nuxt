@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const db = require("./models");
 const app = express();
 
-db.sequelize.sync();
+db.sequelize.sync({ force: true }); // force 활성화시 서버를 새로 시작할 때마다, 변경할 때마다 데이터 초기화
 
 app.use(cors("http://localhost:3000"));
 app.use(express.json());
@@ -24,6 +24,16 @@ app.post("/user", async (req, res, next) => {
   const hashedPassword = await bcrypt.hash(password, 8);
 
   try {
+    const existUser = await db.User.findOne({ email });
+    console.log("existUser", existUser);
+
+    if (existUser) {
+      return res.status(403).json({
+        error: 1,
+        message: "이미 존재하는 아이디입니다.",
+      });
+    }
+
     const newUser = await db.User.create({
       email,
       nickname,

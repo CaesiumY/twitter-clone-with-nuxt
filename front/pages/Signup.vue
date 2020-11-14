@@ -103,7 +103,7 @@ export default {
     onSubmitSignup() {
       if (this.$refs.signupForm.validate()) {
         this.$store
-          .dispatch("users/LOGIN", {
+          .dispatch("users/SIGNUP", {
             email: this.email,
             nickname: this.nickname,
             password: this.password,
