@@ -1,17 +1,35 @@
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const passport = require("passport");
+const session = require("express-session");
+const cookie = require("cookie-parser");
+const morgan = require("morgan");
 
 const db = require("./models");
+const passportConfig = require("./passport");
 const app = express();
 
-db.sequelize.sync({ force: true }); // force 활성화시 서버를 새로 시작할 때마다, 변경할 때마다 데이터 초기화
+const PORT_NUM = 3085;
+const SECRET_COOKIE = "secret_cookie";
 
+db.sequelize.sync({ force: true }); // force 활성화시 서버를 새로 시작할 때마다, 변경할 때마다 데이터 초기화
+passportConfig();
+
+app.use(morgan("dev"));
 app.use(cors("http://localhost:3000"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-const PORT_NUM = 3085;
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(cookie(SECRET_COOKIE));
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: false,
+    secret: SECRET_COOKIE,
+  })
+);
 
 app.get("/", (req, res) => {
   res.send("hello world!");
@@ -45,6 +63,10 @@ app.post("/user", async (req, res, next) => {
     console.log(error);
     next(error);
   }
+});
+
+app.post("/user/login", async (req, res) => {
+  console.log("req", req);
 });
 
 app.listen(PORT_NUM, () => {
