@@ -20,7 +20,7 @@ app.use(morgan("dev"));
 app.use(cors("http://localhost:3000"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(passport.initialize());
+app.use(passport.initialize()); // request에 login & logout 넣어줌
 app.use(passport.session());
 app.use(cookie(SECRET_COOKIE));
 app.use(
@@ -42,7 +42,11 @@ app.post("/user", async (req, res, next) => {
   const hashedPassword = await bcrypt.hash(password, 8);
 
   try {
-    const existUser = await db.User.findOne({ email });
+    const existUser = await db.User.findOne({
+      where: {
+        email,
+      },
+    });
     console.log("existUser", existUser);
 
     if (existUser) {
@@ -65,8 +69,24 @@ app.post("/user", async (req, res, next) => {
   }
 });
 
-app.post("/user/login", async (req, res) => {
-  console.log("req", req);
+app.post("/user/login", async (req, res, next) => {
+  passport.authenticate("local", async (err, user, options) => {
+    if (err) {
+      console.error(error);
+      return next(err);
+    }
+    if (options) {
+      return res.status(401).send(options.reason);
+    }
+    return req.login(user, async (error) => {
+      if (err) {
+        console.error(error);
+        return next(err);
+      }
+
+      return res.json(user);
+    }); // serializeUser를 통해 세션에 저장
+  })(req, res, next);
 });
 
 app.listen(PORT_NUM, () => {
