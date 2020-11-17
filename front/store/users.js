@@ -50,11 +50,30 @@ export const mutations = {
 
 export const actions = {
   SIGNUP({ commit }, payload) {
-    this.$axios.post("http://localhost:3085/user", { ...payload });
-    commit("SET_USER", payload);
+    this.$axios
+      .post("http://localhost:3085/user", { ...payload })
+      .then((res) => {
+        commit("SET_USER", res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   },
   LOGIN({ commit }, payload) {
-    commit("SET_USER", payload);
+    this.$axios
+      .post(
+        "http://localhost:3085/user/login",
+        { ...payload },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        commit("SET_USER", res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   },
   LOGOUT({ commit }) {
     commit("SET_USER", null);

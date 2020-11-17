@@ -1,7 +1,22 @@
 const passport = require("passport");
+const local = require("./local");
+const db = require("../models");
 
 module.exports = () => {
-  passport.serializeUser(() => {});
+  passport.serializeUser((user, done) => {
+    return done(null, user);
+  });
 
-  passport.deserializeUser(() => {});
+  passport.deserializeUser(async (id, done) => {
+    try {
+      const user = await db.User.findOne({ where: { id } });
+
+      return done(null, user);
+    } catch (error) {
+      console.error(error);
+      return done(error);
+    }
+  });
+
+  local();
 };

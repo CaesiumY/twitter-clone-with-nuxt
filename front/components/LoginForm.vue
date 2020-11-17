@@ -68,9 +68,7 @@ export default {
       if (this.$refs.loginForm.validate()) {
         this.$store.dispatch("users/LOGIN", {
           email: this.email,
-          nickname: this.email.split("@")[0],
-          followers: ["오렌지", "포도", "자몽"],
-          followings: ["오렌지", "포도", "자몽"],
+          password: this.password,
         });
       }
     },

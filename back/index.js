@@ -17,7 +17,12 @@ db.sequelize.sync({ force: true }); // force 활성화시 서버를 새로 시�
 passportConfig();
 
 app.use(morgan("dev"));
-app.use(cors("http://localhost:3000"));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(passport.initialize()); // request에 login & logout 넣어줌
@@ -28,6 +33,10 @@ app.use(
     resave: false,
     saveUninitialized: false,
     secret: SECRET_COOKIE,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+    },
   })
 );
 
@@ -35,8 +44,9 @@ app.get("/", (req, res) => {
   res.send("hello world!");
 });
 
+// 회원가입
 app.post("/user", async (req, res, next) => {
-  console.log(req.body);
+  console.time("start");
   const { email, nickname, password } = req.body;
 
   const hashedPassword = await bcrypt.hash(password, 8);
@@ -56,19 +66,37 @@ app.post("/user", async (req, res, next) => {
       });
     }
 
-    const newUser = await db.User.create({
+    await db.User.create({
       email,
       nickname,
       password: hashedPassword,
     });
 
-    res.status(201).json(newUser);
+    passport.authenticate("local", async (err, user, options) => {
+      if (err) {
+        console.error(error);
+        return next(err);
+      }
+      if (options) {
+        return res.status(401).send(options.reason);
+      }
+      return req.login(user, async (error) => {
+        if (err) {
+          console.error(error);
+          return next(err);
+        }
+
+        return res.json(user);
+      }); // serializeUser를 통해 세션에 저장
+    })(req, res, next);
   } catch (error) {
     console.log(error);
     next(error);
   }
+  console.timeEnd("start");
 });
 
+// 로그인
 app.post("/user/login", async (req, res, next) => {
   passport.authenticate("local", async (err, user, options) => {
     if (err) {
