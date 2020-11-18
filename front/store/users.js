@@ -82,7 +82,20 @@ export const actions = {
       });
   },
   LOGOUT({ commit }) {
-    commit("SET_USER", null);
+    this.$axios
+      .post(
+        "http://localhost:3085/user/logout",
+        {},
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        commit("SET_USER", null);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   },
   SET_NICKNAME({ commit }, payload) {
     commit("SET_USER_DETAILS", payload);
