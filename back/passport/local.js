@@ -24,7 +24,7 @@ module.exports = () => {
           );
 
           if (isSamePassword) {
-            return done(null, existUser);
+            return done(null, existUser); // seiralizeUser로 넘겨줌
           } else {
             return done(null, false, { reason: "Incorrect Password" });
           }

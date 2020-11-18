@@ -4,7 +4,7 @@ const db = require("../models");
 
 module.exports = () => {
   passport.serializeUser((user, done) => {
-    return done(null, user);
+    return done(null, user.id); // deserializeUser의 콜백 매개 변수로 보냄
   });
 
   passport.deserializeUser(async (id, done) => {
