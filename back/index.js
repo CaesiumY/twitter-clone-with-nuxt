@@ -8,6 +8,7 @@ const morgan = require("morgan");
 const db = require("./models");
 const passportConfig = require("./passport");
 const userRouter = require("./routes/user");
+const postRouter = require("./routes/post");
 const app = express();
 
 const PORT_NUM = 3085;
@@ -45,6 +46,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userRouter);
+app.use("/post", postRouter);
 
 app.listen(PORT_NUM, () => {
   console.log(`${PORT_NUM}번 포트에서 서버 작동중`);
