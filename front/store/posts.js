@@ -59,4 +59,17 @@ export const actions = {
       commit("LOAD_POSTS");
     }
   },
+  UPLOAD_IMAGES({ _ }, payload) {
+    console.log("payload", payload);
+
+    this.$axios
+      .post("http://localhost:3085/post/", payload, {
+        // TODO: change it into '/post/images/' url after tests
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log("res.data", res.data);
+      })
+      .catch((err) => console.error(err));
+  },
 };

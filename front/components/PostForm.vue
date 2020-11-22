@@ -16,8 +16,17 @@
             :rules="[(v) => !!(v || '').trim() || '내용을 입력하세요.']"
             @input="onChangeTextarea"
           />
-
-          <v-btn>이미지 추가</v-btn>
+          <input
+            ref="image-upload"
+            type="file"
+            accept="image/*"
+            hidden
+            multiple
+            @change="onChangeFile"
+          />
+          <v-btn type="button" @click="onClickImageUploads">
+            이미지 추가
+          </v-btn>
           <v-btn color="success" type="submit" absolute right>
             작성하기
           </v-btn>
@@ -69,6 +78,19 @@ export default {
           this.successMessages = "등록 성공!";
           this.contents = " ";
         });
+    },
+    onClickImageUploads() {
+      this.$refs["image-upload"].click();
+    },
+    onChangeFile(e) {
+      console.log(e.target.files);
+
+      const imageFormData = new FormData();
+      [].forEach.call(e.target.files, (file) => {
+        imageFormData.append(file.name, file);
+      });
+
+      this.$store.dispatch("posts/UPLOAD_IMAGES", imageFormData);
     },
   },
 };
