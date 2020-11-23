@@ -30,6 +30,29 @@
           <v-btn color="success" type="submit" absolute right>
             작성하기
           </v-btn>
+          <div>
+            <div
+              v-for="(path, index) in imagePaths"
+              :key="index"
+              class="ma-2"
+              style="display: inline-block;"
+            >
+              <img
+                :src="`http://localhost:3085/${path}`"
+                :alt="path"
+                width="200"
+              />
+              <div>
+                <button
+                  class="px-3"
+                  type="button"
+                  @click="onClickRemoveImage(index)"
+                >
+                  &times;
+                </button>
+              </div>
+            </div>
+          </div>
         </v-form>
       </v-container>
     </v-card>
@@ -51,6 +74,7 @@ export default {
   },
   computed: {
     ...mapState("users", ["user"]),
+    ...mapState("posts", ["imagePaths"]),
   },
   methods: {
     onChangeTextarea() {
@@ -83,14 +107,15 @@ export default {
       this.$refs["image-upload"].click();
     },
     onChangeFile(e) {
-      console.log(e.target.files);
-
       const imageFormData = new FormData();
       [].forEach.call(e.target.files, (file) => {
-        imageFormData.append(file.name, file);
+        imageFormData.append("image", file);
       });
 
       this.$store.dispatch("posts/UPLOAD_IMAGES", imageFormData);
+    },
+    onClickRemoveImage(i) {
+      this.$store.commit("posts/REMOVE_IMAGE", i);
     },
   },
 };

@@ -40,6 +40,7 @@ app.use(
 );
 app.use(passport.initialize()); // request에 login & logout 넣어줌
 app.use(passport.session());
+app.use("/", express.static("uploads"));
 
 app.get("/", (req, res) => {
   res.send("hello world!");

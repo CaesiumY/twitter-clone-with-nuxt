@@ -1,6 +1,7 @@
 export const state = () => ({
   posts: [],
   hasMorePosts: true,
+  imagePaths: [],
 });
 
 const LIMIT = 10;
@@ -42,6 +43,12 @@ export const mutations = {
     state.posts = [...state.posts, ...dummy];
     state.hasMorePosts = dummy.length === LIMIT;
   },
+  ADD_IMAGE(state, payload) {
+    state.imagePaths = [...state.imagePaths, ...payload];
+  },
+  REMOVE_IMAGE(state, payload) {
+    state.imagePaths.splice(payload, 1);
+  },
 };
 
 export const actions = {
@@ -59,16 +66,17 @@ export const actions = {
       commit("LOAD_POSTS");
     }
   },
-  UPLOAD_IMAGES({ _ }, payload) {
+  UPLOAD_IMAGES({ commit }, payload) {
     console.log("payload", payload);
 
     this.$axios
-      .post("http://localhost:3085/post/", payload, {
+      .post("http://localhost:3085/post/image", payload, {
         // TODO: change it into '/post/images/' url after tests
         withCredentials: true,
       })
       .then((res) => {
         console.log("res.data", res.data);
+        commit("ADD_IMAGE", res.data);
       })
       .catch((err) => console.error(err));
   },
