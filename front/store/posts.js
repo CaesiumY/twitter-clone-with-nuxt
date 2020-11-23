@@ -67,15 +67,11 @@ export const actions = {
     }
   },
   UPLOAD_IMAGES({ commit }, payload) {
-    console.log("payload", payload);
-
     this.$axios
       .post("http://localhost:3085/post/image", payload, {
-        // TODO: change it into '/post/images/' url after tests
         withCredentials: true,
       })
       .then((res) => {
-        console.log("res.data", res.data);
         commit("ADD_IMAGE", res.data);
       })
       .catch((err) => console.error(err));
