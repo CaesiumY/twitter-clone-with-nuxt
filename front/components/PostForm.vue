@@ -89,18 +89,15 @@ export default {
       this.$store
         .dispatch("posts/ADD", {
           contents: this.contents,
-          user: {
-            nickname: this.user.nickname,
-          },
-          id: Date.now().toString() + Math.floor(Math.random() * 300),
-          createdAt: Date.now(),
-          comments: [],
         })
         .then(() => {
           this.success = true;
           this.hideDetails = false;
           this.successMessages = "등록 성공!";
           this.contents = " ";
+        })
+        .catch((e) => {
+          console.error(e);
         });
     },
     onClickImageUploads() {

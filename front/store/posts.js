@@ -10,6 +10,7 @@ const TOTAL = 51;
 export const mutations = {
   ADD_POST(state, payload) {
     state.posts.unshift(payload);
+    state.imagePaths = [];
   },
   REMOVE_POST(state, { id }) {
     const i = state.posts.findIndex((v) => v.id === id);
@@ -32,11 +33,11 @@ export const mutations = {
         return {
           id,
           contents: `${i + state.posts.length + 1}번째 id = ${id}`,
-          user: {
+          User: {
             nickname: "dummy user",
           },
           createdAt: Date.now(),
-          comments: [],
+          Comments: [],
         };
       });
 
@@ -53,7 +54,14 @@ export const mutations = {
 
 export const actions = {
   ADD({ commit }, payload) {
-    commit("ADD_POST", payload);
+    this.$axios
+      .post("http://localhost:3085/post/", payload, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        commit("ADD_POST", res.data);
+      })
+      .catch((err) => console.error("axios", err));
   },
   REMOVE({ commit }, payload) {
     commit("REMOVE_POST", payload);

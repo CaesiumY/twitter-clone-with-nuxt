@@ -4,7 +4,7 @@
       <v-img />
       <v-card-text>
         <nuxt-link class="content-link" :to="`/user/${post.id}`">
-          <h3>{{ post.user.nickname }}</h3>
+          <h3>{{ post.User.nickname }}</h3>
           <p class="body-1">
             {{ post.contents }}
           </p>

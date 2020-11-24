@@ -4,6 +4,8 @@ const { isLoggedIn } = require("./middleware");
 const multer = require("multer");
 const path = require("path");
 
+const db = require("../models");
+
 const uploads = multer({
   storage: multer.diskStorage({
     destination(req, file, done) {
@@ -18,12 +20,57 @@ const uploads = multer({
   limits: 20 * 1024 * 1024,
 });
 
-router.post("/", isLoggedIn, (req, res) => {
-  return res.send("/post");
+router.post("/", isLoggedIn, async (req, res, next) => {
+  try {
+    const { contents } = req.body;
+
+    const newPost = await db.Post.create({
+      contents,
+      UserId: req.user.id,
+    });
+    console.log(
+      "🚀 ~ file: post.js ~ line 31 ~ router.post ~ newPost",
+      newPost
+    );
+
+    const hashtags = contents.match(/#[^\s#]+/g);
+    console.log(
+      "🚀 ~ file: post.js ~ line 33 ~ router.post ~ hashtags",
+      hashtags
+    );
+
+    if (hashtags) {
+      const result = await Promise.all(
+        hashtags.map((hashtag) =>
+          db.Hashtag.findOrCreate({
+            where: { name: hashtag.slice(1).toLowerCase() },
+          })
+        )
+      );
+
+      await newPost.addHashtags(result.map((r) => r[0]));
+    }
+
+    const fullPost = await db.Post.findOne({
+      where: {
+        id: newPost.id,
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["nickname", "id"],
+        },
+      ],
+    });
+
+    return res.json(fullPost);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 router.post("/image", isLoggedIn, uploads.array("image"), (req, res) => {
-  console.log("req.files", req.files);
   return res.json(req.files.map((v) => v.filename));
 });
 
