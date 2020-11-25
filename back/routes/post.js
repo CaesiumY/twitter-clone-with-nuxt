@@ -28,16 +28,8 @@ router.post("/", isLoggedIn, async (req, res, next) => {
       contents,
       UserId: req.user.id,
     });
-    console.log(
-      "🚀 ~ file: post.js ~ line 31 ~ router.post ~ newPost",
-      newPost
-    );
 
     const hashtags = contents.match(/#[^\s#]+/g);
-    console.log(
-      "🚀 ~ file: post.js ~ line 33 ~ router.post ~ hashtags",
-      hashtags
-    );
 
     if (hashtags) {
       const result = await Promise.all(
@@ -72,6 +64,75 @@ router.post("/", isLoggedIn, async (req, res, next) => {
 
 router.post("/image", isLoggedIn, uploads.array("image"), (req, res) => {
   return res.json(req.files.map((v) => v.filename));
+});
+
+router.get("/:id/comments", async (req, res, next) => {
+  try {
+    const post = db.Post.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!post) {
+      return res.status(404).send("Post not found");
+    }
+
+    const comments = await db.Comment.findAll({
+      where: {
+        PostId: post.id,
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "nickname"],
+        },
+      ],
+      order: [["createdAt", "ASC"]],
+    });
+
+    return res.json(comments);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.post("/:id/comment", async (req, res, next) => {
+  try {
+    const post = await db.Post.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!post) {
+      return res.status(404).send("Post Not Found");
+    }
+
+    const newContent = db.Comment.create({
+      PostId: post.id,
+      UserId: req.user.id,
+      content: req.body.content,
+    });
+
+    const comment = await db.Comment.findOne({
+      where: {
+        id: newContent.id,
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "nickname"],
+        },
+      ],
+    });
+
+    return res.json(comment);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 module.exports = router;
