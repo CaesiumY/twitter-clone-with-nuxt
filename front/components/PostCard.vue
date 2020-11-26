@@ -96,6 +96,12 @@ export default {
       console.log("id", this.post.id);
     },
     onToggleComments() {
+      if (!this.isShowComments) {
+        this.$store.dispatch("LOAD_COMMENTS", {
+          postId: this.post.id,
+        });
+      }
+
       this.isShowComments = !this.isShowComments;
     },
   },

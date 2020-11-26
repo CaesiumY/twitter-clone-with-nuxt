@@ -60,11 +60,6 @@ export default {
         this.$store
           .dispatch("posts/ADD_COMMENT", {
             contents: this.contents,
-            id: Date.now().toString() + Math.floor(Math.random() * 300),
-            createdAt: Date.now(),
-            user: {
-              nickname: this.user.nickname,
-            },
             postId: this.postId,
           })
           .then(() => {

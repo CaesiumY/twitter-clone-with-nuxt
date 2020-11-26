@@ -17,38 +17,23 @@ export const mutations = {
 
     state.posts.splice(i, 1);
   },
-  ADD_COMMENT(state, payload) {
-    const i = state.posts.findIndex((v) => v.id === payload.postId);
-
-    state.posts[i].comments.push(payload);
-  },
-  LOAD_POSTS(state) {
-    const diff = TOTAL - state.posts.length;
-
-    const dummy = Array(diff < LIMIT ? diff : LIMIT)
-      .fill()
-      .map((v, i) => {
-        const id = Date.now().toString() + Math.floor(Math.random() * 3000);
-
-        return {
-          id,
-          contents: `${i + state.posts.length + 1}번째 id = ${id}`,
-          User: {
-            nickname: "dummy user",
-          },
-          createdAt: Date.now(),
-          Comments: [],
-        };
-      });
-
-    state.posts = [...state.posts, ...dummy];
-    state.hasMorePosts = dummy.length === LIMIT;
+  LOAD_POSTS(state, payload) {
+    state.posts = [...state.posts, ...payload];
+    state.hasMorePosts = payload.length === LIMIT;
   },
   ADD_IMAGE(state, payload) {
     state.imagePaths = [...state.imagePaths, ...payload];
   },
   REMOVE_IMAGE(state, payload) {
     state.imagePaths.splice(payload, 1);
+  },
+  ADD_COMMENT(state, payload) {
+    const i = state.posts.findIndex((v) => v.id === payload.postId);
+    state.posts[i].Comments.unshift(payload);
+  },
+  LOAD_COMMENTS(state, payload) {
+    const i = state.posts.findIndex((v) => v.id === payload.postId);
+    state.posts[i].Comments = payload;
   },
 };
 
@@ -66,12 +51,18 @@ export const actions = {
   REMOVE({ commit }, payload) {
     commit("REMOVE_POST", payload);
   },
-  ADD_COMMENT({ commit }, payload) {
-    commit("ADD_COMMENT", payload);
-  },
-  LOAD_POSTS({ commit, state }) {
+  LOAD_POSTS({ commit, state }, payload) {
+    const { offset } = payload;
+
     if (state.hasMorePosts) {
-      commit("LOAD_POSTS");
+      this.$axios
+        .get(`http://localhost:3085/posts?offset=${offset}?limit=${LIMIT}`)
+        .then((res) => {
+          commit("LOAD_POSTS", res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
   },
   UPLOAD_IMAGES({ commit }, payload) {
@@ -83,5 +74,34 @@ export const actions = {
         commit("ADD_IMAGE", res.data);
       })
       .catch((err) => console.error(err));
+  },
+  LOAD_COMMENTS({ commit }, payload) {
+    const { postId } = payload;
+    this.$axios
+      .get(`http://localhost/3085/post/${postId}/comments`)
+      .then((res) => {
+        commit("LOAD_COMMENTS", res.data);
+      })
+      .catch((err) => console.log(err));
+  },
+  ADD_COMMENT({ commit }, payload) {
+    const { postId, contents } = payload;
+
+    this.$axios
+      .post(
+        `http://localhost/3085/post/${postId}/comment`,
+        {
+          contents,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        commit("ADD_COMMENT", res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   },
 };
