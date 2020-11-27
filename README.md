@@ -1,2 +1,1 @@
-# twitter-clone-with-nuxt
-twitter-clone-with-nuxt
+# Nuxt 트위터 클론 코딩
