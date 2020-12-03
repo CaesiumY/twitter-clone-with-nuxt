@@ -50,7 +50,9 @@ export const actions = {
   },
   REMOVE({ commit }, payload) {
     this.$axios
-      .delete(`http://localhost:3085/post/${payload.postId}`)
+      .delete(`http://localhost:3085/post/${payload.postId}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         commit("REMOVE_POST", res.data);
       })
@@ -59,11 +61,9 @@ export const actions = {
       });
   },
   LOAD_POSTS({ commit, state }, payload) {
-    const { offset } = payload;
-
     if (state.hasMorePosts) {
       this.$axios
-        .get(`http://localhost:3085/posts?offset=${offset}?limit=${LIMIT}`)
+        .get(`http://localhost:3085/posts?offset=${10}?limit=${LIMIT}`)
         .then((res) => {
           commit("LOAD_POSTS", res.data);
         })
