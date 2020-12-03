@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     onDeletePost() {
-      this.$store.dispatch("posts/REMOVE", { id: this.post.id });
+      this.$store.dispatch("posts/REMOVE", { postId: this.post.id });
     },
     onEditPost() {
       console.log("id", this.post.id);

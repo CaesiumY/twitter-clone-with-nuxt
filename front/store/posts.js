@@ -12,8 +12,8 @@ export const mutations = {
     state.posts.unshift(payload);
     state.imagePaths = [];
   },
-  REMOVE_POST(state, { id }) {
-    const i = state.posts.findIndex((v) => v.id === id);
+  REMOVE_POST(state, { postId }) {
+    const i = state.posts.findIndex((v) => v.id === postId);
 
     state.posts.splice(i, 1);
   },
@@ -49,7 +49,14 @@ export const actions = {
       .catch((err) => console.error("axios", err));
   },
   REMOVE({ commit }, payload) {
-    commit("REMOVE_POST", payload);
+    this.$axios
+      .delete(`http://localhost:3085/post/${payload.postId}`)
+      .then((res) => {
+        commit("REMOVE_POST", res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   },
   LOAD_POSTS({ commit, state }, payload) {
     const { offset } = payload;

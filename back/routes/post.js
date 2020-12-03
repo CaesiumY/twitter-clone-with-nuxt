@@ -20,6 +20,20 @@ const uploads = multer({
   limits: 20 * 1024 * 1024,
 });
 
+router.delete("/:id", isLoggedIn, async (req, res, next) => {
+  try {
+    await db.Post.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.send("Deleted");
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 router.post("/", isLoggedIn, async (req, res, next) => {
   try {
     const { contents } = req.body;
