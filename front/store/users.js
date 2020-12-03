@@ -49,6 +49,18 @@ export const mutations = {
 };
 
 export const actions = {
+  LOAD_USER({ commit }) {
+    this.$axios
+      .get("http://localhost:3085/user/", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        commit("SET_USER", res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  },
   SIGNUP({ commit }, payload) {
     this.$axios
       .post(

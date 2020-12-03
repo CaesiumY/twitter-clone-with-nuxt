@@ -20,20 +20,6 @@ const uploads = multer({
   limits: 20 * 1024 * 1024,
 });
 
-router.delete("/:id", isLoggedIn, async (req, res, next) => {
-  try {
-    await db.Post.destroy({
-      where: {
-        id: req.params.id,
-      },
-    });
-    res.send("Deleted");
-  } catch (error) {
-    console.error(error);
-    next(error);
-  }
-});
-
 router.post("/", isLoggedIn, async (req, res, next) => {
   try {
     const { contents } = req.body;
@@ -78,6 +64,20 @@ router.post("/", isLoggedIn, async (req, res, next) => {
 
 router.post("/image", isLoggedIn, uploads.array("image"), (req, res) => {
   return res.json(req.files.map((v) => v.filename));
+});
+
+router.delete("/:id", isLoggedIn, async (req, res, next) => {
+  try {
+    await db.Post.destroy({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.send("Deleted");
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 router.get("/:id/comments", async (req, res, next) => {

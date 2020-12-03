@@ -58,6 +58,9 @@ export default {
       search: "",
     };
   },
+  fetch({ store }) {
+    store.dispatch("users/LOAD_USER");
+  },
   methods: {
     onSubmitSearch() {
       this.$router.push({
