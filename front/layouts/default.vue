@@ -61,6 +61,9 @@ export default {
   fetch({ store }) {
     store.dispatch("users/LOAD_USER");
   },
+  mounted() {
+    this.$store.dispatch("users/LOAD_USER");
+  },
   methods: {
     onSubmitSearch() {
       this.$router.push({

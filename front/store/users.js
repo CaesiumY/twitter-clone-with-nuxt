@@ -1,7 +1,7 @@
 export const state = () => ({
   user: null,
-  hasMoreFollowers: true,
-  hasMoreFollowings: true,
+  hasMoreFollowers: false,
+  hasMoreFollowings: false,
 });
 
 const TOTAL = 16;
@@ -23,7 +23,7 @@ export const mutations = {
     state.user.followings.splice(payload.id, 1);
   },
   LOAD_FOLLOWERS(state) {
-    const diff = TOTAL - state.user.followers.length;
+    const diff = TOTAL - (state.user.followers.length || 0);
 
     const dummy = Array(diff < LIMIT ? diff : LIMIT)
       .fill()
@@ -35,7 +35,7 @@ export const mutations = {
     state.hasMoreFollowers = dummy.length === LIMIT;
   },
   LOAD_FOLLOWINGS(state) {
-    const diff = TOTAL - state.user.followings.length;
+    const diff = TOTAL - (state.user.followings.length || 0);
 
     const dummy = Array(diff < LIMIT ? diff : LIMIT)
       .fill()
