@@ -26,6 +26,8 @@ export default {
     ...mapState("posts", ["posts", "hasMorePosts"]),
   },
   mounted() {
+    this.$store.dispatch("posts/LOAD_POSTS");
+
     window.addEventListener("scroll", () => {
       if (
         window.scrollY + document.documentElement.clientHeight >

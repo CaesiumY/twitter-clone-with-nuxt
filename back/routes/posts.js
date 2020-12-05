@@ -4,8 +4,9 @@ const router = express.Router();
 const db = require("../models");
 
 router.get("/", async (req, res, next) => {
+  console.log("posts");
   try {
-    const posts = db.Post.findAll({
+    const posts = await db.Post.findAll({
       include: [
         {
           model: db.User,

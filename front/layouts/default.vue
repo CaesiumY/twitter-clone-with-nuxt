@@ -58,9 +58,7 @@ export default {
       search: "",
     };
   },
-  fetch({ store }) {
-    store.dispatch("users/LOAD_USER");
-  },
+
   mounted() {
     this.$store.dispatch("users/LOAD_USER");
   },

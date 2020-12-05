@@ -63,9 +63,10 @@ export const actions = {
   LOAD_POSTS({ commit, state }, payload) {
     if (state.hasMorePosts) {
       this.$axios
-        .get(`http://localhost:3085/posts?offset=${10}?limit=${LIMIT}`)
+        .get(`http://localhost:3085/posts?offset=${10}&limit=${LIMIT}`)
         .then((res) => {
           commit("LOAD_POSTS", res.data);
+          console.log("load posts");
         })
         .catch((err) => {
           console.error(err);
