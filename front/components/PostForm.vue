@@ -89,6 +89,7 @@ export default {
       this.$store
         .dispatch("posts/ADD", {
           contents: this.contents,
+          images: this.imagePaths,
         })
         .then(() => {
           this.success = true;

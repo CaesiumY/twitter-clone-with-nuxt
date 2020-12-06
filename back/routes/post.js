@@ -43,6 +43,18 @@ router.post("/", isLoggedIn, async (req, res, next) => {
       await newPost.addHashtags(result.map((r) => r[0]));
     }
 
+    if (req.body.images) {
+      if (Array.isArray(req.body.images)) {
+        await Promise.all(
+          req.body.images.map((image) =>
+            db.Image.create({ src: image, PostId: newPost.id })
+          )
+        );
+      } else {
+        await db.Image.create({ src: req.body.images, PostId: newPost.id });
+      }
+    }
+
     const fullPost = await db.Post.findOne({
       where: {
         id: newPost.id,
@@ -51,6 +63,9 @@ router.post("/", isLoggedIn, async (req, res, next) => {
         {
           model: db.User,
           attributes: ["nickname", "id"],
+        },
+        {
+          model: db.Image,
         },
       ],
     });

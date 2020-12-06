@@ -1,7 +1,6 @@
 <template>
   <v-container>
     <v-card>
-      <v-img />
       <v-card-text>
         <nuxt-link class="content-link" :to="`/user/${post.id}`">
           <h3>{{ post.User.nickname }}</h3>
@@ -10,6 +9,9 @@
           </p>
         </nuxt-link>
       </v-card-text>
+
+      <post-images :images="post.Images || []" />
+
       <v-card-actions>
         <v-btn text color="#f39c12">
           <v-icon>mdi-twitter-retweet</v-icon>
@@ -72,10 +74,12 @@
 
 <script>
 import CommentForm from "../components/CommentForm";
+import PostImages from "../components/PostImages";
 
 export default {
   components: {
     CommentForm,
+    PostImages,
   },
   props: {
     post: {

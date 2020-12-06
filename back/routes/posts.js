@@ -12,6 +12,9 @@ router.get("/", async (req, res, next) => {
           model: db.User,
           attributes: ["id", "nickname"],
         },
+        {
+          model: db.Image,
+        },
       ],
       offset: parseInt(req.params.offset) || 0,
       limit: parseInt(req.params.limit) || 10,
