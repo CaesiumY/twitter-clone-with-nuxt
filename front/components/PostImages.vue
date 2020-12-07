@@ -15,16 +15,16 @@
       class="flex-grow-1"
       contain
       aspect-ratio="2"
-      @click="onOpenZoom"
       style="flex: 1"
+      @click="onOpenZoom"
     />
     <v-img
       :src="`http://localhost:3085/${images[1].src}`"
       class="flex-grow-1"
       contain
       aspect-ratio="2"
-      @click="onOpenZoom"
       style="flex: 1"
+      @click="onOpenZoom"
     />
     <image-zoom v-if="isZoomed" :on-close="onCloseZoom" :images="images" />
   </div>
@@ -34,8 +34,8 @@
       class="flex-grow-1"
       contain
       aspect-ratio="2"
-      @click="onOpenZoom"
       style="flex: 1"
+      @click="onOpenZoom"
     />
     <div
       class="d-flex align-center justify-center"
