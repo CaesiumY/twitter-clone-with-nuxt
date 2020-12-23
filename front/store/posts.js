@@ -30,17 +30,15 @@ export const mutations = {
     state.imagePaths.splice(payload, 1);
   },
   ADD_COMMENT(state, payload) {
-    const i = state.posts.findIndex((v) => v.id === payload.postId);
+    console.log(
+      "🚀 ~ file: posts.js ~ line 33 ~ ADD_COMMENT ~ payload",
+      payload
+    );
+    const i = state.posts.findIndex((v) => v.id === payload.PostId);
     state.posts[i].Comments.unshift(payload);
   },
   LOAD_COMMENTS(state, payload) {
-    console.log(
-      "🚀 ~ file: posts.js ~ line 37 ~ LOAD_COMMENTS ~ payload",
-      payload
-    );
     const i = state.posts.findIndex((v) => v.id === payload.postId);
-    console.log("🚀 ~ file: posts.js ~ line 42 ~ LOAD_COMMENTS ~ i", i);
-    // state.posts[i].Comments = payload;
 
     Vue.set(state.posts[i], "Comments", payload.data);
   },
