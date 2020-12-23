@@ -53,17 +53,17 @@
     <template v-if="isShowComments">
       <comment-form :post-id="post.id" />
       <v-list>
-        <v-list-item v-for="comment in post.comments" :key="comment.id">
+        <v-list-item v-for="comment in post.Comments" :key="comment.id">
           <v-list-item-avatar color="teal">
-            <span>{{ comment.user.nickname[0] }}</span>
+            <span>{{ comment.User.nickname[0] }}</span>
           </v-list-item-avatar>
 
           <v-list-item-content>
             <v-list-item-title>
-              {{ comment.user.nickname }}
+              {{ comment.User.nickname }}
             </v-list-item-title>
             <v-list-item-subtitle>
-              {{ comment.contents }}
+              {{ comment.content }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
