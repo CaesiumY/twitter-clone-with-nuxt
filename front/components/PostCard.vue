@@ -101,7 +101,7 @@ export default {
     },
     onToggleComments() {
       if (!this.isShowComments) {
-        this.$store.dispatch("LOAD_COMMENTS", {
+        this.$store.dispatch("posts/LOAD_COMMENTS", {
           postId: this.post.id,
         });
       }

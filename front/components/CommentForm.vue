@@ -31,7 +31,7 @@ import { mapState } from "vuex";
 export default {
   props: {
     postId: {
-      type: String,
+      type: Number,
       required: true,
     },
   },

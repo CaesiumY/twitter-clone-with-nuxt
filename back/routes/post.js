@@ -97,7 +97,7 @@ router.delete("/:id", isLoggedIn, async (req, res, next) => {
 
 router.get("/:id/comments", async (req, res, next) => {
   try {
-    const post = db.Post.findOne({
+    const post = await db.Post.findOne({
       where: {
         id: req.params.id,
       },
@@ -120,14 +120,14 @@ router.get("/:id/comments", async (req, res, next) => {
       order: [["createdAt", "ASC"]],
     });
 
-    return res.json(comments);
+    res.json(comments);
   } catch (error) {
     console.error(error);
     next(error);
   }
 });
 
-router.post("/:id/comment", async (req, res, next) => {
+router.post("/:id/comment", isLoggedIn, async (req, res, next) => {
   try {
     const post = await db.Post.findOne({
       where: {
@@ -139,10 +139,10 @@ router.post("/:id/comment", async (req, res, next) => {
       return res.status(404).send("Post Not Found");
     }
 
-    const newContent = db.Comment.create({
+    const newContent = await db.Comment.create({
       PostId: post.id,
       UserId: req.user.id,
-      content: req.body.content,
+      content: req.body.contents,
     });
 
     const comment = await db.Comment.findOne({

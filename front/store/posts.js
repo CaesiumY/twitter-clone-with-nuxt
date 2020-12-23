@@ -1,3 +1,5 @@
+import Vue from "vue";
+
 export const state = () => ({
   posts: [],
   hasMorePosts: true,
@@ -32,8 +34,15 @@ export const mutations = {
     state.posts[i].Comments.unshift(payload);
   },
   LOAD_COMMENTS(state, payload) {
+    console.log(
+      "🚀 ~ file: posts.js ~ line 37 ~ LOAD_COMMENTS ~ payload",
+      payload
+    );
     const i = state.posts.findIndex((v) => v.id === payload.postId);
-    state.posts[i].Comments = payload;
+    console.log("🚀 ~ file: posts.js ~ line 42 ~ LOAD_COMMENTS ~ i", i);
+    // state.posts[i].Comments = payload;
+
+    Vue.set(state.posts[i], "Comments", payload.data);
   },
 };
 
@@ -86,9 +95,12 @@ export const actions = {
   LOAD_COMMENTS({ commit }, payload) {
     const { postId } = payload;
     this.$axios
-      .get(`http://localhost/3085/post/${postId}/comments`)
+      .get(`http://localhost:3085/post/${postId}/comments`)
       .then((res) => {
-        commit("LOAD_COMMENTS", res.data);
+        commit("LOAD_COMMENTS", {
+          postId: payload.postId,
+          data: res.data,
+        });
       })
       .catch((err) => console.log(err));
   },
@@ -97,7 +109,7 @@ export const actions = {
 
     this.$axios
       .post(
-        `http://localhost/3085/post/${postId}/comment`,
+        `http://localhost:3085/post/${postId}/comment`,
         {
           contents,
         },
