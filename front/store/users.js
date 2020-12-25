@@ -51,7 +51,7 @@ export const mutations = {
 export const actions = {
   LOAD_USER({ commit }) {
     this.$axios
-      .get("http://localhost:3085/user/", {
+      .get("/user/", {
         withCredentials: true,
       })
       .then((res) => {
@@ -64,7 +64,7 @@ export const actions = {
   SIGNUP({ commit }, payload) {
     this.$axios
       .post(
-        "http://localhost:3085/user",
+        "/user",
         { ...payload },
         {
           withCredentials: true,
@@ -80,7 +80,7 @@ export const actions = {
   LOGIN({ commit }, payload) {
     this.$axios
       .post(
-        "http://localhost:3085/user/login",
+        "/user/login",
         { ...payload },
         {
           withCredentials: true,
@@ -96,7 +96,7 @@ export const actions = {
   LOGOUT({ commit }) {
     this.$axios
       .post(
-        "http://localhost:3085/user/logout",
+        "/user/logout",
         {},
         {
           withCredentials: true,

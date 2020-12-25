@@ -1,9 +1,9 @@
-export const state = () => ({
-  count: 0,
-});
+export const state = () => ({});
 
-export const mutations = {
-  INCREMENT(state) {
-    state.count++;
+export const mutations = {};
+
+export const actions = {
+  nuxtServerInit({ commit, dispatch, state }, { req }) {
+    return dispatch("users/LOAD_USER");
   },
 };

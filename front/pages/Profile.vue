@@ -72,7 +72,7 @@ export default {
   },
   fetch({ store }) {
     store.dispatch("users/LOAD_FOLLOWERS");
-    store.dispatch("users/LOAD_FOLLOWINGS");
+    return store.dispatch("users/LOAD_FOLLOWINGS");
   },
   head: {
     title: "Profile",

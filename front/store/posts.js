@@ -30,10 +30,6 @@ export const mutations = {
     state.imagePaths.splice(payload, 1);
   },
   ADD_COMMENT(state, payload) {
-    console.log(
-      "🚀 ~ file: posts.js ~ line 33 ~ ADD_COMMENT ~ payload",
-      payload
-    );
     const i = state.posts.findIndex((v) => v.id === payload.PostId);
     state.posts[i].Comments.unshift(payload);
   },
@@ -47,7 +43,7 @@ export const mutations = {
 export const actions = {
   ADD({ commit }, payload) {
     this.$axios
-      .post("http://localhost:3085/post/", payload, {
+      .post("/post/", payload, {
         withCredentials: true,
       })
       .then((res) => {
@@ -57,7 +53,7 @@ export const actions = {
   },
   REMOVE({ commit }, payload) {
     this.$axios
-      .delete(`http://localhost:3085/post/${payload.postId}`, {
+      .delete(`/post/${payload.postId}`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -70,10 +66,9 @@ export const actions = {
   LOAD_POSTS({ commit, state }, payload) {
     if (state.hasMorePosts) {
       this.$axios
-        .get(`http://localhost:3085/posts?offset=${10}&limit=${LIMIT}`)
+        .get(`/posts?offset=${10}&limit=${LIMIT}`)
         .then((res) => {
           commit("LOAD_POSTS", res.data);
-          console.log("load posts");
         })
         .catch((err) => {
           console.error(err);
@@ -82,7 +77,7 @@ export const actions = {
   },
   UPLOAD_IMAGES({ commit }, payload) {
     this.$axios
-      .post("http://localhost:3085/post/image", payload, {
+      .post("/post/image", payload, {
         withCredentials: true,
       })
       .then((res) => {
@@ -93,7 +88,7 @@ export const actions = {
   LOAD_COMMENTS({ commit }, payload) {
     const { postId } = payload;
     this.$axios
-      .get(`http://localhost:3085/post/${postId}/comments`)
+      .get(`/post/${postId}/comments`)
       .then((res) => {
         commit("LOAD_COMMENTS", {
           postId: payload.postId,
@@ -107,7 +102,7 @@ export const actions = {
 
     this.$axios
       .post(
-        `http://localhost:3085/post/${postId}/comment`,
+        `/post/${postId}/comment`,
         {
           contents,
         },

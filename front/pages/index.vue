@@ -19,7 +19,7 @@ export default {
     PostForm,
   },
   fetch({ store }) {
-    store.dispatch("posts/LOAD_POSTS");
+    return store.dispatch("posts/LOAD_POSTS");
   },
   computed: {
     ...mapState("users", ["user"]),
