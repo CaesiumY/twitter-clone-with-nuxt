@@ -237,4 +237,38 @@ router.post("/:id/retweet", async (req, res, next) => {
   }
 });
 
+router.post("/:id/like", isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await db.Post.findOne({
+      id: req.params.id,
+    });
+
+    if (!post) {
+      res.status(404).send("Post not found");
+    }
+
+    await post.addLiker(req.user.id);
+    res.json({ userId: req.user.id });
+  } catch (error) {
+    console.error(error);
+  }
+});
+
+router.delete("/:id/like", isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await db.Post.findOne({
+      id: req.params.id,
+    });
+
+    if (!post) {
+      res.status(404).send("Post not found");
+    }
+
+    await post.removeLiker(req.user.id);
+    res.json({ userId: req.user.id });
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 module.exports = router;
