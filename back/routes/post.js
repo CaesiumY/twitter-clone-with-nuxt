@@ -67,6 +67,11 @@ router.post("/", isLoggedIn, async (req, res, next) => {
         {
           model: db.Image,
         },
+        {
+          model: db.User,
+          as: "Likers",
+          attributes: ["id"],
+        },
       ],
     });
 
@@ -227,6 +232,11 @@ router.post("/:id/retweet", async (req, res, next) => {
               model: db.Image,
             },
           ],
+        },
+        {
+          model: db.User,
+          as: "Likers",
+          attributes: ["id"],
         },
       ],
     });

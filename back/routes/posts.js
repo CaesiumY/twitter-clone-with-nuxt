@@ -15,6 +15,24 @@ router.get("/", async (req, res, next) => {
         {
           model: db.Image,
         },
+        {
+          model: db.User,
+          as: "Likers",
+          attributes: ["id"],
+        },
+        {
+          model: db.Post,
+          as: "Retweet",
+          include: [
+            {
+              model: db.User,
+              attributes: ["id", "nickname"],
+            },
+            {
+              model: db.Image,
+            },
+          ],
+        },
       ],
       offset: parseInt(req.params.offset) || 0,
       limit: parseInt(req.params.limit) || 10,
