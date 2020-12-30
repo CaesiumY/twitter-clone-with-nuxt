@@ -192,7 +192,7 @@ router.post("/:id/retweet", async (req, res, next) => {
       return res.status(403).send("Cannot Retweet my own post!");
     }
 
-    const retweetTargetId = post.Retweet.UserId || post.id;
+    const retweetTargetId = post.RetweetId || post.id;
 
     const exPost = await db.Post.findOne({
       where: {
@@ -208,7 +208,7 @@ router.post("/:id/retweet", async (req, res, next) => {
     const retweet = await db.Post.create({
       UserId: req.user.id,
       RetweetId: retweetTargetId,
-      content: "retweet content",
+      contents: "retweet content",
     });
 
     const retweetWithPrevPost = await db.Post.findOne({
