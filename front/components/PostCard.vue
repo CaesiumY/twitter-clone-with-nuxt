@@ -13,11 +13,11 @@
       <post-images :images="post.Images || []" />
 
       <v-card-actions>
-        <v-btn text color="#f39c12">
+        <v-btn text color="#f39c12" @click="onClickRetweet">
           <v-icon>mdi-twitter-retweet</v-icon>
         </v-btn>
-        <v-btn text color="#f39c12">
-          <v-icon>mdi-heart-outline</v-icon>
+        <v-btn text color="#f39c12" @click="onToggleLike">
+          <v-icon>{{ isHeartFilled }}</v-icon>
         </v-btn>
         <v-btn text color="#f39c12" @click="onToggleComments">
           <v-icon>mdi-comment-outline</v-icon>
@@ -92,6 +92,19 @@ export default {
       isShowComments: false,
     };
   },
+  computed: {
+    me() {
+      return this.$store.state.users.user;
+    },
+    isLiked() {
+      return !!(this.post.Likers || []).find(
+        (liker) => liker.id === (this.me && this.me.id)
+      );
+    },
+    isHeartFilled() {
+      return this.isLiked ? "mdi-heart" : "mdi-heart-outline";
+    },
+  },
   methods: {
     onDeletePost() {
       this.$store.dispatch("posts/REMOVE", { postId: this.post.id });
@@ -107,6 +120,30 @@ export default {
       }
 
       this.isShowComments = !this.isShowComments;
+    },
+    onClickRetweet() {
+      if (!this.me) {
+        return alert("Login Required!");
+      }
+
+      return this.$store.dispatch("posts/RETWEET_POST", {
+        postId: this.post.id,
+      });
+    },
+    onToggleLike() {
+      if (!this.me) {
+        return alert("Login Required!");
+      }
+
+      if (!this.isLiked) {
+        return this.$store.dispatch("posts/LIKE_POST", {
+          postId: this.post.id,
+        });
+      } else {
+        return this.$store.dispatch("posts/UNLIKE_POST", {
+          postId: this.post.id,
+        });
+      }
     },
   },
 };

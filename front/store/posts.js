@@ -38,6 +38,17 @@ export const mutations = {
 
     Vue.set(state.posts[i], "Comments", payload.data);
   },
+  LIKE_POST(state, payload) {
+    const i = state.posts.findIndex((v) => v.id === payload.postId);
+    state.posts[i].Likers.push({ id: payload.userId });
+  },
+  UNLIKE_POST(state, payload) {
+    const i = state.posts.findIndex((v) => v.id === payload.postId);
+    const userIndex = state.posts[i].Likers.findIndex(
+      (v) => v.id === payload.userId
+    );
+    state.posts[i].Likers.splice(userIndex, 1);
+  },
 };
 
 export const actions = {
@@ -116,5 +127,49 @@ export const actions = {
       .catch((err) => {
         console.error(err);
       });
+  },
+  RETWEET_POST({ commit }, payload) {
+    this.$axios
+      .post(
+        `/post/${payload.postId}/retweet`,
+        {},
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        commit("ADD_POST", res.data);
+      })
+      .catch((err) => console.error(err));
+  },
+  LIKE_POST({ commit }, payload) {
+    this.$axios
+      .post(
+        `/post/${payload.postId}/like`,
+        {},
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        commit("LIKE_POST", {
+          userId: res.data.userId,
+          postId: payload.postId,
+        });
+      })
+      .catch((err) => console.error(err));
+  },
+  UNLIKE_POST({ commit }, payload) {
+    this.$axios
+      .delete(`/post/${payload.postId}/like`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        commit("UNLIKE_POST", {
+          userId: res.data.userId,
+          postId: payload.postId,
+        });
+      })
+      .catch((err) => console.error(err));
   },
 };
