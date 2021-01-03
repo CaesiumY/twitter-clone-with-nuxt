@@ -1,17 +1,16 @@
 <template>
   <v-container>
     <v-card>
-      <v-card-text>
-        <nuxt-link class="content-link" :to="`/user/${post.id}`">
-          <h3>{{ post.User.nickname }}</h3>
-          <p class="body-1">
-            {{ post.contents }}
-          </p>
-        </nuxt-link>
-      </v-card-text>
+      <div v-if="post.RetweetId && post.Retweet">
+        <v-subheader>
+          {{ post.User.nickname }}님이 리트윗하셨습니다.
+        </v-subheader>
+        <v-card class="mx-5">
+          <post-content :post="post.Retweet" />
+        </v-card>
+      </div>
 
-      <post-images :images="post.Images || []" />
-
+      <post-content v-else :post="post" />
       <v-card-actions>
         <v-btn text color="#f39c12" @click="onClickRetweet">
           <v-icon>mdi-twitter-retweet</v-icon>
@@ -74,12 +73,12 @@
 
 <script>
 import CommentForm from "../components/CommentForm";
-import PostImages from "../components/PostImages";
+import PostContent from "./PostContent.vue";
 
 export default {
   components: {
     CommentForm,
-    PostImages,
+    PostContent,
   },
   props: {
     post: {

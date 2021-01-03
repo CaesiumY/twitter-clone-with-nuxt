@@ -140,7 +140,10 @@ export const actions = {
       .then((res) => {
         commit("ADD_POST", res.data);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        alert(err.response.data);
+      });
   },
   LIKE_POST({ commit }, payload) {
     this.$axios
