@@ -46,6 +46,13 @@ export const mutations = {
     state.user.followings = [...state.user.followings, ...dummy];
     state.hasMoreFollowings = dummy.length === LIMIT;
   },
+  ADD_FOLLOW(state, payload) {
+    state.user.Followings.push({ id: payload.userId });
+  },
+  REMOVE_FOLLOW(state, payload) {
+    const i = state.user.Followings.findIndex((v) => v.id === payload.userId);
+    state.user.Followings.splice(i, 1);
+  },
 };
 
 export const actions = {
@@ -126,5 +133,41 @@ export const actions = {
     if (state.hasMoreFollowings) {
       commit("LOAD_FOLLOWINGS");
     }
+  },
+  FOLLOW({ commit }, payload) {
+    this.$axios
+      .post(
+        `user/${payload.userId}/follow`,
+        {},
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        commit("ADD_FOLLOW", {
+          userId: payload.userId,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  },
+  UNFOLLOW({ commit }, payload) {
+    this.$axios
+      .delete(
+        `user/${payload.userId}/follow`,
+
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        commit("REMOVE_FOLLOW", {
+          userId: payload.userId,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   },
 };
