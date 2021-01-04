@@ -51,7 +51,7 @@ export const mutations = {
 export const actions = {
   LOAD_USER({ commit }) {
     this.$axios
-      .get("/user/", {
+      .get("/user", {
         withCredentials: true,
       })
       .then((res) => {

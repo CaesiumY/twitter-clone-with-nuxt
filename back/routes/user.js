@@ -55,7 +55,26 @@ router.post("/", isNotLoggedIn, async (req, res, next) => {
           return next(err);
         }
 
-        return res.json(user);
+        const fullUser = await db.User.findOne({
+          where: {
+            id: user.id,
+          },
+          attributes: ["id", "nickname", "email"],
+          include: [
+            {
+              model: db.User,
+              as: "Followers",
+              attributes: ["id"],
+            },
+            {
+              model: db.User,
+              as: "Followings",
+              attributes: ["id"],
+            },
+          ],
+        });
+
+        return res.json(fullUser);
       }); // serializeUser를 통해 세션에 저장
     })(req, res, next);
   } catch (error) {
@@ -83,7 +102,26 @@ router.post("/login", isNotLoggedIn, async (req, res, next) => {
         return next(err);
       }
 
-      return res.json(user);
+      const fullUser = await db.User.findOne({
+        where: {
+          id: user.id,
+        },
+        attributes: ["id", "nickname", "email"],
+        include: [
+          {
+            model: db.User,
+            as: "Followers",
+            attributes: ["id"],
+          },
+          {
+            model: db.User,
+            as: "Followings",
+            attributes: ["id"],
+          },
+        ],
+      });
+
+      return res.json(fullUser);
     }); // serializeUser를 통해 세션에 저장
   })(req, res, next);
 });
@@ -93,6 +131,58 @@ router.post("/logout", isLoggedIn, (req, res) => {
   req.logout();
   req.session.destroy();
   return res.status(200).send("logout");
+});
+
+router.patch("/nickname", isLoggedIn, async (req, res, next) => {
+  try {
+    await db.User.update(
+      {
+        nickname: req.body.nickname,
+      },
+      {
+        where: {
+          id: req.user.id,
+        },
+      }
+    );
+
+    res.send(req.body.nickname);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.post("/:id/follow", isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await db.User.findOne({
+      where: {
+        id: req.user.id,
+      },
+    });
+
+    await user.addFollowing(req.params.id);
+    res.send(req.params.id);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.delete("/:id/follow", isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await db.User.findOne({
+      where: {
+        id: req.user.id,
+      },
+    });
+
+    await user.removeFollowing(req.params.id);
+    res.send(req.params.id);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 });
 
 module.exports = router;
