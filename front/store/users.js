@@ -117,7 +117,20 @@ export const actions = {
       });
   },
   SET_NICKNAME({ commit }, payload) {
-    commit("SET_USER_DETAILS", payload);
+    this.$axios
+      .patch(
+        "user/nickname",
+        { nickname: payload.nickname },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        commit("SET_USER_DETAILS", payload);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   },
   DELETE_FOLLOW({ commit }, payload) {
     payload.type === "following"
