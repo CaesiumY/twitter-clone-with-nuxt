@@ -20,7 +20,7 @@
           Follows
         </v-subheader>
         <follow-list
-          :follows="user ? user.followings : []"
+          :follows="user ? user.Followings : []"
           follow-type="following"
         />
         <v-btn
@@ -39,7 +39,7 @@
           Followers
         </v-subheader>
         <follow-list
-          :follows="user ? user.followers : []"
+          :follows="user ? user.Followers : []"
           follow-type="follower"
         />
         <v-btn

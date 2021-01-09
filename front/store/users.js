@@ -1,7 +1,7 @@
 export const state = () => ({
   user: null,
-  hasMoreFollowers: false,
-  hasMoreFollowings: false,
+  hasMoreFollowers: true,
+  hasMoreFollowings: true,
 });
 
 const TOTAL = 16;
@@ -23,7 +23,7 @@ export const mutations = {
     state.user.followings.splice(payload.id, 1);
   },
   LOAD_FOLLOWERS(state) {
-    const diff = TOTAL - (state.user.followers.length || 0);
+    const diff = TOTAL - (state.user.Followers.length || 0);
 
     const dummy = Array(diff < LIMIT ? diff : LIMIT)
       .fill()
@@ -31,19 +31,17 @@ export const mutations = {
         return Math.floor(Math.random() * 3000) + Date.now().toString();
       });
 
-    state.user.followers = [...state.user.followers, ...dummy];
+    state.user.Followers = [...state.user.Followers, ...dummy];
     state.hasMoreFollowers = dummy.length === LIMIT;
   },
   LOAD_FOLLOWINGS(state) {
-    const diff = TOTAL - (state.user.followings.length || 0);
-
+    const diff = TOTAL - (state.user.Followings.length || 0);
     const dummy = Array(diff < LIMIT ? diff : LIMIT)
       .fill()
       .map((v, i) => {
         return Math.floor(Math.random() * 3000) + Date.now().toString();
       });
-
-    state.user.followings = [...state.user.followings, ...dummy];
+    state.user.Followings = [...state.user.Followings, ...dummy];
     state.hasMoreFollowings = dummy.length === LIMIT;
   },
   ADD_FOLLOW(state, payload) {
