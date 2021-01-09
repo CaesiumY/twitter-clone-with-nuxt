@@ -17,32 +17,28 @@ export const mutations = {
     state.user = userProfile;
   },
   DELETE_FOLLOWER(state, payload) {
-    state.user.followers.splice(payload.id, 1);
+    state.user.Followers.splice(payload.id, 1);
   },
   DELETE_FOLLOWING(state, payload) {
-    state.user.followings.splice(payload.id, 1);
+    state.user.Followings.splice(payload.id, 1);
   },
-  LOAD_FOLLOWERS(state) {
-    const diff = TOTAL - (state.user.Followers.length || 0);
+  LOAD_FOLLOWERS(state, payload) {
+    if (payload.offset === 0) {
+      state.user.Followers = payload.data;
+    } else {
+      state.user.Followers = [state.user.Followers, ...payload.data];
+    }
 
-    const dummy = Array(diff < LIMIT ? diff : LIMIT)
-      .fill()
-      .map((v, i) => {
-        return Math.floor(Math.random() * 3000) + Date.now().toString();
-      });
-
-    state.user.Followers = [...state.user.Followers, ...dummy];
-    state.hasMoreFollowers = dummy.length === LIMIT;
+    state.hasMoreFollowers = payload.data.length === LIMIT;
   },
-  LOAD_FOLLOWINGS(state) {
-    const diff = TOTAL - (state.user.Followings.length || 0);
-    const dummy = Array(diff < LIMIT ? diff : LIMIT)
-      .fill()
-      .map((v, i) => {
-        return Math.floor(Math.random() * 3000) + Date.now().toString();
-      });
-    state.user.Followings = [...state.user.Followings, ...dummy];
-    state.hasMoreFollowings = dummy.length === LIMIT;
+  LOAD_FOLLOWINGS(state, payload) {
+    if (payload.offset === 0) {
+      state.user.Followings = payload.data;
+    } else {
+      state.user.Followings = [state.user.Followings, ...payload.data];
+    }
+
+    state.hasMoreFollowings = payload.data.length === LIMIT;
   },
   ADD_FOLLOW(state, payload) {
     state.user.Followings.push({ id: payload.userId });
@@ -135,15 +131,45 @@ export const actions = {
       ? commit("DELETE_FOLLOWING", payload)
       : commit("DELETE_FOLLOWER", payload);
   },
-  LOAD_FOLLOWERS({ commit, state }) {
-    if (state.hasMoreFollowers) {
-      commit("LOAD_FOLLOWERS");
-    }
+  LOAD_FOLLOWERS({ commit, state }, payload) {
+    if (!(payload && payload.offset === 0) && !state.hasMoreFollowers) return;
+
+    let offset = state.user.Followers.length;
+    payload && payload.offset === 0 ? (offset = 0) : offset;
+    console.log(
+      "🚀 ~ file: users.js ~ line 126 ~ LOAD_FOLLOWERS ~ offset",
+      offset
+    );
+
+    return this.$axios
+      .get(`user/${state.user.id}/followers?limit=3&offset=${offset}`, {
+        withCredentials: true,
+      })
+      .then((res) =>
+        commit("LOAD_FOLLOWERS", {
+          data: res.data,
+          offset,
+        })
+      )
+      .catch((err) => console.error(err));
   },
-  LOAD_FOLLOWINGS({ commit, state }) {
-    if (state.hasMoreFollowings) {
-      commit("LOAD_FOLLOWINGS");
-    }
+  LOAD_FOLLOWINGS({ commit, state }, payload) {
+    if (!(payload && payload.offset === 0) && !state.hasMoreFollowings) return;
+
+    let offset = state.user.Followings.length;
+    payload && payload.offset === 0 ? (offset = 0) : offset;
+
+    return this.$axios
+      .get(`user/${state.user.id}/followings?limit=3&offset=${offset}`, {
+        withCredentials: true,
+      })
+      .then((res) =>
+        commit("LOAD_FOLLOWINGS", {
+          data: res.data,
+          offset,
+        })
+      )
+      .catch((err) => console.error(err));
   },
   FOLLOW({ commit }, payload) {
     this.$axios

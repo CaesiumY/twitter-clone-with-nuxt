@@ -185,4 +185,42 @@ router.delete("/:id/follow", isLoggedIn, async (req, res, next) => {
   }
 });
 
+router.get("/:id/followings", isLoggedIn, async (req, res, next) => {
+  try {
+    const me = await db.User.findOne({
+      where: { id: req.params.id },
+    });
+
+    const followings = await me.getFollowings({
+      attributes: ["id", "nickname"],
+      limit: parseInt(req.params.limit || 3, 10),
+      offset: parseInt(req.params.offset || 0, 10),
+    });
+
+    res.json(followings);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get("/:id/followers", isLoggedIn, async (req, res, next) => {
+  try {
+    const me = await db.User.findOne({
+      where: { id: req.params.id },
+    });
+
+    const followers = await me.getFollowers({
+      attributes: ["id", "nickname"],
+      limit: parseInt(req.params.limit || 3, 10),
+      offset: parseInt(req.params.offset || 0, 10),
+    });
+
+    res.json(followers);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 module.exports = router;

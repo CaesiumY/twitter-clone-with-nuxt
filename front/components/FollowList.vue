@@ -9,10 +9,10 @@
     >
       <v-list-item>
         <v-list-item-avatar color="#5C6BC0" class="white--text">
-          {{ item[0] }}
+          {{ item.nickname[0] }}
         </v-list-item-avatar>
         <v-list-item-content>
-          <span>{{ item }}</span>
+          <span>{{ item.nickname }}</span>
         </v-list-item-content>
         <v-list-item-action>
           <v-icon @click="onClickDelete({ item, index })">
