@@ -15,7 +15,7 @@
           <span>{{ item.nickname }}</span>
         </v-list-item-content>
         <v-list-item-action>
-          <v-icon @click="onClickDelete({ item, index })">
+          <v-icon @click="onClickDelete(item)">
             mdi-minus-circle-outline
           </v-icon>
         </v-list-item-action>
@@ -38,11 +38,13 @@ export default {
   },
   methods: {
     onClickDelete(payload) {
-      this.$store.dispatch("users/DELETE_FOLLOW", {
-        id: payload.index,
-        nickname: payload.item,
-        type: this.followType,
-      });
+      this.followType === "following"
+        ? this.$store.dispatch("users/UNFOLLOW", {
+            userId: payload.id,
+          })
+        : this.$store.dispatch("users/DELETE_FOLLOWER", {
+            userId: payload.id,
+          });
     },
   },
 };

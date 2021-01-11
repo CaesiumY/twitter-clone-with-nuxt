@@ -16,12 +16,6 @@ export const mutations = {
 
     state.user = userProfile;
   },
-  DELETE_FOLLOWER(state, payload) {
-    state.user.Followers.splice(payload.id, 1);
-  },
-  DELETE_FOLLOWING(state, payload) {
-    state.user.Followings.splice(payload.id, 1);
-  },
   LOAD_FOLLOWERS(state, payload) {
     if (payload.offset === 0) {
       state.user.Followers = payload.data;
@@ -43,9 +37,13 @@ export const mutations = {
   ADD_FOLLOW(state, payload) {
     state.user.Followings.push({ id: payload.userId });
   },
-  REMOVE_FOLLOW(state, payload) {
+  REMOVE_FOLLOWING(state, payload) {
     const i = state.user.Followings.findIndex((v) => v.id === payload.userId);
     state.user.Followings.splice(i, 1);
+  },
+  DELETE_FOLLOWER(state, payload) {
+    const i = state.user.Followers.findIndex((v) => v.id === payload.userId);
+    state.user.Followers.splice(i, 1);
   },
 };
 
@@ -126,20 +124,12 @@ export const actions = {
         console.error(err);
       });
   },
-  DELETE_FOLLOW({ commit }, payload) {
-    payload.type === "following"
-      ? commit("DELETE_FOLLOWING", payload)
-      : commit("DELETE_FOLLOWER", payload);
-  },
+
   LOAD_FOLLOWERS({ commit, state }, payload) {
     if (!(payload && payload.offset === 0) && !state.hasMoreFollowers) return;
 
     let offset = state.user.Followers.length;
     payload && payload.offset === 0 ? (offset = 0) : offset;
-    console.log(
-      "🚀 ~ file: users.js ~ line 126 ~ LOAD_FOLLOWERS ~ offset",
-      offset
-    );
 
     return this.$axios
       .get(`user/${state.user.id}/followers?limit=3&offset=${offset}`, {
@@ -190,7 +180,9 @@ export const actions = {
       });
   },
   UNFOLLOW({ commit }, payload) {
-    this.$axios
+    console.log("🚀 ~ file: users.js ~ line 183 ~ UNFOLLOW ~ payload", payload);
+
+    return this.$axios
       .delete(
         `user/${payload.userId}/follow`,
 
@@ -199,7 +191,25 @@ export const actions = {
         }
       )
       .then((res) => {
-        commit("REMOVE_FOLLOW", {
+        commit("REMOVE_FOLLOWING", {
+          userId: payload.userId,
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  },
+  DELETE_FOLLOWER({ commit }, payload) {
+    return this.$axios
+      .delete(
+        `user/${payload.userId}/follower`,
+
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        commit("DELETE_FOLLOWER", {
           userId: payload.userId,
         });
       })
