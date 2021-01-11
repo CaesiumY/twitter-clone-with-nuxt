@@ -91,11 +91,12 @@ export default {
           contents: this.contents,
           images: this.imagePaths,
         })
-        .then(() => {
+        .then((res) => {
           this.success = true;
           this.hideDetails = false;
           this.successMessages = "등록 성공!";
           this.contents = " ";
+          this.$store.commit("users/ADD_POST_LENGTH", { id: res.id });
         })
         .catch((e) => {
           console.error(e);

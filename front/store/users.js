@@ -45,6 +45,9 @@ export const mutations = {
     const i = state.user.Followers.findIndex((v) => v.id === payload.userId);
     state.user.Followers.splice(i, 1);
   },
+  ADD_POST_LENGTH(state, payload) {
+    state.user.Posts.push(payload);
+  },
 };
 
 export const actions = {
@@ -180,8 +183,6 @@ export const actions = {
       });
   },
   UNFOLLOW({ commit }, payload) {
-    console.log("🚀 ~ file: users.js ~ line 183 ~ UNFOLLOW ~ payload", payload);
-
     return this.$axios
       .delete(
         `user/${payload.userId}/follow`,

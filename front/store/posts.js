@@ -1,4 +1,5 @@
 import Vue from "vue";
+import { mutations as userMutations } from "./users";
 
 export const state = () => ({
   posts: [],
@@ -53,12 +54,13 @@ export const mutations = {
 
 export const actions = {
   ADD({ commit }, payload) {
-    this.$axios
+    return this.$axios
       .post("/post/", payload, {
         withCredentials: true,
       })
       .then((res) => {
         commit("ADD_POST", res.data);
+        return res.data;
       })
       .catch((err) => console.error("axios", err));
   },
