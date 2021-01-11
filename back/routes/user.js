@@ -62,6 +62,10 @@ router.post("/", isNotLoggedIn, async (req, res, next) => {
           attributes: ["id", "nickname", "email"],
           include: [
             {
+              model: db.Post,
+              attributes: ["id"],
+            },
+            {
               model: db.User,
               as: "Followers",
               attributes: ["id"],
@@ -108,6 +112,10 @@ router.post("/login", isNotLoggedIn, async (req, res, next) => {
         },
         attributes: ["id", "nickname", "email"],
         include: [
+          {
+            model: db.Post,
+            attributes: ["id"],
+          },
           {
             model: db.User,
             as: "Followers",

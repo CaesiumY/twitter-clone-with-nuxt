@@ -39,6 +39,11 @@
             Logout
           </v-btn>
         </div>
+        <v-row>
+          <v-col col="4">{{ user.Followings.length }} 팔로우</v-col>
+          <v-col col="4">{{ user.Followers.length }} 팔로워</v-col>
+          <v-col col="4">{{ user.Posts.length }} 게시글</v-col>
+        </v-row>
       </v-container>
     </v-card>
   </v-container>

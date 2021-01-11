@@ -14,6 +14,10 @@ module.exports = () => {
         attributes: ["id", "nickname"],
         include: [
           {
+            model: db.Post,
+            attributes: ["id"],
+          },
+          {
             model: db.User,
             as: "Followers",
             attributes: ["id"],
