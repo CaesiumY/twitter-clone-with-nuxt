@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { mutations as userMutations } from "./users";
+import throttle from "lodash.throttle";
 
 export const state = () => ({
   posts: [],
@@ -76,10 +76,12 @@ export const actions = {
         console.error(err);
       });
   },
-  LOAD_POSTS({ commit, state }, payload) {
+  LOAD_POSTS: throttle(function({ commit, state }, payload) {
     if (state.hasMorePosts) {
+      const lastPost = state.posts[state.posts.length - 1];
+
       this.$axios
-        .get(`/posts?offset=${10}&limit=${LIMIT}`)
+        .get(`/posts?lastId=${lastPost && lastPost.id}&limit=${LIMIT}`)
         .then((res) => {
           commit("LOAD_POSTS", res.data);
         })
@@ -87,7 +89,7 @@ export const actions = {
           console.error(err);
         });
     }
-  },
+  }, 3000),
   UPLOAD_IMAGES({ commit }, payload) {
     this.$axios
       .post("/post/image", payload, {
