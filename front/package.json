@@ -21,8 +21,9 @@
   },
   "homepage": "https://github.com/CaesiumY/twitter-clone-with-nuxt",
   "dependencies": {
-    "@nuxtjs/axios": "^5.12.2",
-    "axios": "^0.21.0",
+    "@nuxtjs/axios": "^5.12.5",
+    "axios": "^0.21.1",
+    "lodash.throttle": "^4.1.1",
     "nuxt": "^2.14.7",
     "vue": "^2.6.12",
     "vuetify": "^2.3.15"
