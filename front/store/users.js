@@ -2,14 +2,17 @@ export const state = () => ({
   user: null,
   hasMoreFollowers: true,
   hasMoreFollowings: true,
+  other: null,
 });
 
-const TOTAL = 16;
 const LIMIT = 3;
 
 export const mutations = {
   SET_USER(state, payload) {
     state.user = payload;
+  },
+  SET_OTHER(state, payload) {
+    state.other = payload;
   },
   SET_USER_DETAILS(state, payload) {
     const userProfile = { ...state.user, ...payload };
@@ -62,6 +65,17 @@ export const actions = {
       .catch((err) => {
         console.error(err);
       });
+  },
+  async LOAD_OTHER({ commit }, payload) {
+    try {
+      const res = await this.$axios.get(`/user/${payload.userId}`, {
+        withCredentials: true,
+      });
+
+      commit("SET_OTHER", res.data);
+    } catch (error) {
+      console.error(error);
+    }
   },
   SIGNUP({ commit }, payload) {
     this.$axios
