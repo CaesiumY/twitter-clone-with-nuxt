@@ -90,6 +90,23 @@ export const actions = {
         });
     }
   }, 3000),
+  LOAD_USER_POSTS: throttle(function({ commit, state }, payload) {
+    if (state.hasMorePosts) {
+      const lastPost = state.posts[state.posts.length - 1];
+
+      this.$axios
+        .get(
+          `/user/${payload.userId}/posts?lastId=${lastPost &&
+            lastPost.id}&limit=${LIMIT}`
+        )
+        .then((res) => {
+          commit("LOAD_POSTS", res.data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, 2000),
   UPLOAD_IMAGES({ commit }, payload) {
     this.$axios
       .post("/post/image", payload, {

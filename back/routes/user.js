@@ -13,6 +13,38 @@ router.get("/", isLoggedIn, async (req, res, next) => {
   res.json(user);
 });
 
+router.get("/:id", async (req, res, next) => {
+  try {
+    const user = await db.User.findOne({
+      where: {
+        id: parseInt(req.params.id, 10),
+      },
+      include: [
+        {
+          model: db.Post,
+          attributes: ["id"],
+        },
+        {
+          model: db.User,
+          as: "Followers",
+          attributes: ["id"],
+        },
+        {
+          model: db.User,
+          as: "Followings",
+          attributes: ["id"],
+        },
+      ],
+      attributes: ["id", "nickname"],
+    });
+
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 // 회원가입
 router.post("/", isNotLoggedIn, async (req, res, next) => {
   console.time("start");
@@ -155,6 +187,54 @@ router.patch("/nickname", isLoggedIn, async (req, res, next) => {
     );
 
     res.send(req.body.nickname);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get("/:id/posts", async (req, res, next) => {
+  try {
+    let where = {
+      id: parseInt(req.params.id, 10),
+      RetweetId: null,
+    };
+
+    if (parseInt(req.query.lastId, 10))
+      where[db.Sequelize.Op.lt] = parseInt(req.query.lastId, 10);
+
+    const post = await db.Post.findOne({
+      where,
+      include: [
+        {
+          model: db.User,
+          attributes: ["id", "nickname"],
+        },
+        {
+          model: db.Image,
+        },
+        {
+          model: db.User,
+          as: "Likers",
+          attributes: ["id"],
+        },
+        // {
+        //   model: db.Post,
+        //   as: "Retweet",
+        //   include: [
+        //     {
+        //       model: db.User,
+        //       attributes: ["id", "nickname"],
+        //     },
+        //     {
+        //       model: db.Image,
+        //     },
+        //   ],
+        // },
+      ],
+    });
+
+    res.json(post);
   } catch (error) {
     console.error(error);
     next(error);
