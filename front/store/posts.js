@@ -21,7 +21,18 @@ export const mutations = {
     state.posts.splice(i, 1);
   },
   LOAD_POSTS(state, payload) {
-    state.posts = [...state.posts, ...payload];
+    console.log(
+      "🚀 ~ file: posts.js ~ line 24 ~ LOAD_POSTS ~ payload",
+      payload
+    );
+    const { data, reset } = payload;
+
+    if (reset) {
+      state.posts = data;
+    } else {
+      state.posts = [...state.posts, data];
+    }
+
     state.hasMorePosts = payload.length === LIMIT;
   },
   ADD_IMAGE(state, payload) {
@@ -76,35 +87,50 @@ export const actions = {
         console.error(err);
       });
   },
-  LOAD_POSTS: throttle(function({ commit, state }, payload) {
-    if (state.hasMorePosts) {
-      const lastPost = state.posts[state.posts.length - 1];
+  LOAD_POSTS: throttle(async function({ commit, state }, payload) {
+    try {
+      if (payload && payload.reset) {
+        const res = await this.$axios.get(`/posts?limit=${LIMIT}`);
+        commit("LOAD_POSTS", { data: res.data, reset: true });
+        return;
+      }
 
-      this.$axios
-        .get(`/posts?lastId=${lastPost && lastPost.id}&limit=${LIMIT}`)
-        .then((res) => {
-          commit("LOAD_POSTS", res.data);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+      if (state.hasMorePosts) {
+        const lastPost = state.posts[state.posts.length - 1];
+
+        const res = await this.$axios.get(
+          `/posts?lastId=${lastPost && lastPost.id}&limit=${LIMIT}`
+        );
+        commit("LOAD_POSTS", { data: res.data });
+        return;
+      }
+    } catch (error) {
+      console.error(error);
     }
   }, 3000),
-  LOAD_USER_POSTS: throttle(function({ commit, state }, payload) {
-    if (state.hasMorePosts) {
-      const lastPost = state.posts[state.posts.length - 1];
+  LOAD_USER_POSTS: throttle(async function({ commit, state }, payload) {
+    try {
+      if (payload && payload.reset) {
+        const res = await this.$axios.get(
+          `/user/${payload.userId}/posts?limit=${LIMIT}`
+        );
 
-      this.$axios
-        .get(
+        commit("LOAD_POSTS", { data: res.data, reset: true });
+        return;
+      }
+
+      if (state.hasMorePosts) {
+        const lastPost = state.posts[state.posts.length - 1];
+
+        const res = await this.$axios.get(
           `/user/${payload.userId}/posts?lastId=${lastPost &&
             lastPost.id}&limit=${LIMIT}`
-        )
-        .then((res) => {
-          commit("LOAD_POSTS", res.data);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+        );
+        commit("LOAD_POSTS", { data: res.data });
+        return;
+      }
+    } catch (error) {
+      console.error(error);
     }
   }, 2000),
   UPLOAD_IMAGES({ commit }, payload) {

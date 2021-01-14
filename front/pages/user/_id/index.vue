@@ -29,6 +29,7 @@ export default {
     return Promise.all([
       store.dispatch("posts/LOAD_USER_POSTS", {
         userId: params.id,
+        reset: true,
       }),
       store.dispatch("users/LOAD_OTHER", {
         userId: params.id,
@@ -49,8 +50,6 @@ export default {
     ...mapState("posts", ["posts", "hasMorePosts"]),
   },
   mounted() {
-    this.$store.dispatch("posts/LOAD_POSTS");
-
     window.addEventListener("scroll", () => {
       if (
         window.scrollY + document.documentElement.clientHeight >

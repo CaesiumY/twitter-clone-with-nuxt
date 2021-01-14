@@ -203,7 +203,7 @@ router.get("/:id/posts", async (req, res, next) => {
     if (parseInt(req.query.lastId, 10))
       where[db.Sequelize.Op.lt] = parseInt(req.query.lastId, 10);
 
-    const post = await db.Post.findOne({
+    const post = await db.Post.findAll({
       where,
       include: [
         {

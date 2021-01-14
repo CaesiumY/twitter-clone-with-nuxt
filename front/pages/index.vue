@@ -19,25 +19,28 @@ export default {
     PostForm,
   },
   fetch({ store }) {
-    return store.dispatch("posts/LOAD_POSTS");
+    return store.dispatch("posts/LOAD_POSTS", { reset: true });
   },
   computed: {
     ...mapState("users", ["user"]),
     ...mapState("posts", ["posts", "hasMorePosts"]),
   },
   mounted() {
-    this.$store.dispatch("posts/LOAD_POSTS");
-
-    window.addEventListener("scroll", () => {
+    window.addEventListener("scroll", this.onScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.onScroll);
+  },
+  methods: {
+    onScroll() {
       if (
         window.scrollY + document.documentElement.clientHeight >
         document.documentElement.scrollHeight - 300
       ) {
         this.$store.dispatch("posts/LOAD_POSTS");
       }
-    });
+    },
   },
-  methods: {},
 };
 </script>
 

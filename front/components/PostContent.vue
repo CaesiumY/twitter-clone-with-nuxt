@@ -4,7 +4,7 @@
 
     <v-card-title>
       <h3>
-        <nuxt-link class="content-link" :to="`/user/${post.id}`">
+        <nuxt-link class="content-link" :to="`/user/${post.UserId}`">
           {{ post.User.nickname }}
         </nuxt-link>
         <v-btn v-if="canFollow" @click="onFollow">팔로우</v-btn>
