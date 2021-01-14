@@ -196,7 +196,7 @@ router.patch("/nickname", isLoggedIn, async (req, res, next) => {
 router.get("/:id/posts", async (req, res, next) => {
   try {
     let where = {
-      id: parseInt(req.params.id, 10),
+      UserId: parseInt(req.params.id, 10),
       RetweetId: null,
     };
 
