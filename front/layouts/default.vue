@@ -17,7 +17,7 @@
           <v-form @submit.prevent="onSubmitSearch">
             <div class="d-flex align-center" style="height: 100%">
               <v-text-field
-                v-model="search"
+                v-model="hashtag"
                 label="검색"
                 hide-details
                 prepend-icon="mdi-magnify"
@@ -55,7 +55,7 @@ export default {
   },
   data() {
     return {
-      search: "",
+      hashtag: "",
     };
   },
 
@@ -65,10 +65,10 @@ export default {
   methods: {
     onSubmitSearch() {
       this.$router.push({
-        path: `search/${this.search}`,
+        path: `/hashtag/${encodeURIComponent(this.hashtag)}`,
       });
 
-      this.search = "";
+      this.hashtag = "";
     },
   },
 };

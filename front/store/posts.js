@@ -129,6 +129,31 @@ export const actions = {
       console.error(error);
     }
   }, 2000),
+  LOAD_HASHTAG_POSTS: throttle(async function({ commit, state }, payload) {
+    try {
+      if (payload && payload.reset) {
+        const res = await this.$axios.get(
+          `/hashtag/${payload.hashtag}?limit=${LIMIT}`
+        );
+
+        commit("LOAD_POSTS", { data: res.data, reset: true });
+        return;
+      }
+
+      if (state.hasMorePosts) {
+        const lastPost = state.posts[state.posts.length - 1];
+
+        const res = await this.$axios.get(
+          `/hashtag/${payload.hashtag}?lastId=${lastPost &&
+            lastPost.id}&limit=${LIMIT}`
+        );
+        commit("LOAD_POSTS", { data: res.data });
+        return;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, 2000),
   UPLOAD_IMAGES({ commit }, payload) {
     this.$axios
       .post("/post/image", payload, {

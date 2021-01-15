@@ -14,7 +14,17 @@
 
     <v-card-text>
       <div class="body-1">
-        <div>{{ post.contents }}</div>
+        <span v-for="(item, index) in node" :key="index">
+          <nuxt-link
+            v-if="item.startsWith('#')"
+            :key="index"
+            class="hash"
+            :to="`/hashtag/${item.slice(1)}`"
+          >
+            {{ item }}
+          </nuxt-link>
+          <template v-else>{{ item }}</template>
+        </span>
       </div>
     </v-card-text>
   </div>
@@ -34,6 +44,9 @@ export default {
     },
   },
   computed: {
+    node() {
+      return this.post.contents.split(/(#[^\s#]+)/);
+    },
     me() {
       return this.$store.state.users.user;
     },
@@ -71,5 +84,9 @@ export default {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+.hash {
+  color: royalblue;
 }
 </style>

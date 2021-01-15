@@ -71,8 +71,10 @@ export default {
     };
   },
   fetch({ store }) {
-    store.dispatch("users/LOAD_FOLLOWERS", { offset: 0 });
-    return store.dispatch("users/LOAD_FOLLOWINGS", { offset: 0 });
+    return Promise.all([
+      store.dispatch("users/LOAD_FOLLOWERS", { offset: 0 }),
+      store.dispatch("users/LOAD_FOLLOWINGS", { offset: 0 }),
+    ]);
   },
   head: {
     title: "Profile",

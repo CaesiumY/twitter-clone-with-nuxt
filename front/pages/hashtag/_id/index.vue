@@ -14,11 +14,13 @@ export default {
   components: {
     PostCard,
   },
-  fetch({ store }) {
-    store.dispatch("posts/LOAD_POSTS");
+  fetch({ store, params }) {
+    store.dispatch("posts/LOAD_HASHTAG_POSTS", {
+      hashtag: encodeURIComponent(params.id),
+      reset: true,
+    });
   },
   computed: {
-    ...mapState("users", ["user"]),
     ...mapState("posts", ["posts", "hasMorePosts"]),
   },
   mounted() {
