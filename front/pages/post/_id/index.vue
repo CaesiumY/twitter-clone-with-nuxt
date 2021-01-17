@@ -14,10 +14,13 @@ export default {
   components: {
     PostCard,
   },
+  fetch({ store, params }) {
+    return store.dispatch("posts/LOAD_POST", params.id);
+  },
   computed: {
     post() {
       return this.$store.state.posts.posts.find(
-        (v) => v.id === this.$route.params.id
+        (v) => v.id === parseInt(this.$route.params.id)
       );
     },
   },

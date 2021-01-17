@@ -86,6 +86,48 @@ router.post("/image", isLoggedIn, uploads.array("image"), (req, res) => {
   return res.json(req.files.map((v) => v.filename));
 });
 
+router.get("/:id", async (req, res, next) => {
+  try {
+    const post = await db.Post.findOne({
+      where: {
+        id: req.params.id,
+      },
+      include: [
+        {
+          model: db.User,
+          attributes: ["nickname", "id"],
+        },
+        {
+          model: db.Image,
+        },
+        {
+          model: db.User,
+          as: "Likers",
+          attributes: ["id"],
+        },
+        {
+          model: db.Post,
+          as: "Retweet",
+          include: [
+            {
+              model: db.User,
+              attributes: ["id", "nickname"],
+            },
+            {
+              model: db.Image,
+            },
+          ],
+        },
+      ],
+    });
+
+    res.json(post);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 router.delete("/:id", isLoggedIn, async (req, res, next) => {
   try {
     await db.Post.destroy({

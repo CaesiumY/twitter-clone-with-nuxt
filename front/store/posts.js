@@ -20,6 +20,10 @@ export const mutations = {
 
     state.posts.splice(i, 1);
   },
+  LOAD_POST(state, payload) {
+    console.log("🚀 ~ file: posts.js ~ line 24 ~ LOAD_POST ~ payload", payload);
+    state.posts = [payload];
+  },
   LOAD_POSTS(state, payload) {
     const { data, reset } = payload;
 
@@ -82,6 +86,14 @@ export const actions = {
       .catch((err) => {
         console.error(err);
       });
+  },
+  async LOAD_POST({ commit }, payload) {
+    try {
+      const res = await this.$axios.get(`/post/${payload}`);
+      commit("LOAD_POST", res.data);
+    } catch (error) {
+      console.error(error);
+    }
   },
   LOAD_POSTS: throttle(async function({ commit, state }, payload) {
     try {

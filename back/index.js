@@ -16,7 +16,7 @@ const app = express();
 const PORT_NUM = 3085;
 const SECRET_COOKIE = "secret_cookie";
 
-db.sequelize.sync({ force: false }); // force 활성화시 서버를 새로 시작할 때마다, 변경할 때마다 데이터 초기화
+db.sequelize.sync({ force: true }); // force 활성화시 서버를 새로 시작할 때마다, 변경할 때마다 데이터 초기화
 passportConfig();
 
 app.use(morgan("dev"));
