@@ -10,6 +10,7 @@
         <v-btn v-if="canFollow" @click="onFollow">팔로우</v-btn>
         <v-btn v-if="canUnfollow" @click="onUnfollow">언팔로우</v-btn>
       </h3>
+      <span class="time">{{ $moment(post.createdAt).fromNow() }}</span>
     </v-card-title>
 
     <v-card-text>
@@ -88,5 +89,10 @@ a {
 
 .hash {
   color: royalblue;
+}
+
+.time {
+  font-size: 12px;
+  margin: 0 10px;
 }
 </style>

@@ -7,6 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nuxt",
     "start": "npm run dev",
+    "server": "nuxt start",
+    "build": "nuxt build",
     "lint": "eslint --ext .js,.vue .",
     "fix": "eslint --ext .js,.vue . --fix"
   },
@@ -22,6 +24,8 @@
   "homepage": "https://github.com/CaesiumY/twitter-clone-with-nuxt",
   "dependencies": {
     "@nuxtjs/axios": "^5.12.5",
+    "@nuxtjs/moment": "^1.6.1",
+    "@nuxtjs/vuetify": "^1.11.2",
     "axios": "^0.21.1",
     "lodash.throttle": "^4.1.1",
     "nuxt": "^2.14.7",
@@ -29,7 +33,6 @@
     "vuetify": "^2.3.15"
   },
   "devDependencies": {
-    "@nuxtjs/vuetify": "^1.11.2",
     "eslint": "^7.12.0",
     "eslint-plugin-vue": "^7.1.0"
   },
