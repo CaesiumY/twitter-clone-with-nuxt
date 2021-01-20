@@ -21,7 +21,6 @@ export const mutations = {
     state.posts.splice(i, 1);
   },
   LOAD_POST(state, payload) {
-    console.log("🚀 ~ file: posts.js ~ line 24 ~ LOAD_POST ~ payload", payload);
     state.posts = [payload];
   },
   LOAD_POSTS(state, payload) {
