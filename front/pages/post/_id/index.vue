@@ -41,12 +41,12 @@ export default {
           property: "og:image",
           content: this.post.Images[0]
             ? this.post.Images[0].src
-            : "https://vue.nodebird.com/vue-nodebird.png",
+            : "http://localhost:3000/logo.png",
         },
         {
           hid: "ogurl",
           property: "og:url",
-          content: `https://vue.nodebird.com/post/${this.post.id}`,
+          content: `http://localhost:3000/post/${this.post.id}`,
         },
       ],
     };

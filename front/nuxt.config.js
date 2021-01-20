@@ -35,12 +35,18 @@ export default {
       {
         hid: "ogimage",
         property: "og:image",
-        content: "https://vue.nodebird.com/vue-nodebird.png",
+        content: "http://localhost:3000/logo.png",
       },
       {
         hid: "ogurl",
         property: "og:url",
         content: "https://vue.nodebird.com",
+      },
+    ],
+    link: [
+      {
+        rel: "shortcut icon",
+        href: "/favicon.ico",
       },
     ],
   },
