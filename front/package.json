@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nuxt",
     "start": "npm run dev",
-    "server": "npm run build && nuxt start",
+    "serve": "npm run build && nuxt start",
     "build": "nuxt build",
     "lint": "eslint --ext .js,.vue .",
     "fix": "eslint --ext .js,.vue . --fix"
